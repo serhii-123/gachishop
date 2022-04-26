@@ -9,5 +9,6 @@ public interface IUser
     string Name { get; set; }
     string Password { get; set; }
     bool IsAdmin { get; set; }
+    int Discount { get; set; }
     bool CheckAccess(string name, string password);
 }
