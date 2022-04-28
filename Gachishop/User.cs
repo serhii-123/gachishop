@@ -11,6 +11,14 @@ public class User : IUser
     public string Password { get; set; }
     public bool IsAdmin { get; set; }
     public int Discount { get; set; }
+
+    public User(string name, string password, bool isAdmin, int discount)
+    {
+        Name = name;
+        Password = password;
+        IsAdmin = isAdmin;
+        Discount = discount;
+    }
     public bool CheckAccess(string name, string password)
     {
         return (Name == name) && (Password == password);
