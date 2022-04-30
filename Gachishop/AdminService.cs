@@ -11,10 +11,12 @@ public class AdminService : IAdminService
     public void Start()
     {
         bool done = false;
+        string enteredText;
+        
         while (!done)
         {
             Console.WriteLine("Доступные команды: \nДобавить товар\nВыйти");
-            string enteredText = Console.ReadLine();
+            enteredText = CustomInput.ReadText();
 
             switch (enteredText)
             {
@@ -30,18 +32,21 @@ public class AdminService : IAdminService
 
     private void AddProduct()
     {
+        string name, description, type;
+        int price;
+        
         Console.WriteLine("Введите имя товара");
-        string name = CustomInput.ReadText();
+        name = CustomInput.ReadText();
         Console.WriteLine("Введите описание товара");
-        string description = CustomInput.ReadText();
+        description = CustomInput.ReadText();
         Console.WriteLine("Введите тип товара");
-        string type = CustomInput.ReadText();
+        type = CustomInput.ReadText();
         
         if (!_productTypes.Contains(type)) {
             Console.WriteLine("Невозможно добавить товар с таким типом. Введите другой тип");
             while (true)
             {
-                type = Console.ReadLine();
+                type = CustomInput.ReadText();
                 if (!_productTypes.Contains(type))
                 {
                     Console.WriteLine("Невозможно добавить товар с таким типом. Введите другой тип");
@@ -51,8 +56,8 @@ public class AdminService : IAdminService
         }
         
         Console.WriteLine("Введите цену товара");
-        int price = CustomInput.ReadNumber();
+        price = CustomInput.ReadNumber();
         
-        Console.WriteLine("Товар добавлен, ебана");
+        Console.WriteLine("Товар добавлен");
     }
 }
