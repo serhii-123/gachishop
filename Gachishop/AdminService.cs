@@ -21,7 +21,7 @@ public class AdminService : IAdminService
                 case("Добавить товар"):
                     AddProduct();
                     break;
-                case("Выход"):
+                case("Выйти"):
                     done = true;
                     break;
             }
@@ -31,11 +31,11 @@ public class AdminService : IAdminService
     private void AddProduct()
     {
         Console.WriteLine("Введите имя товара");
-        string name = Console.ReadLine();
+        string name = CustomInput.ReadText();
         Console.WriteLine("Введите описание товара");
-        string description = Console.ReadLine();
+        string description = CustomInput.ReadText();
         Console.WriteLine("Введите тип товара");
-        string type = Console.ReadLine();
+        string type = CustomInput.ReadText();
         
         if (!_productTypes.Contains(type)) {
             Console.WriteLine("Невозможно добавить товар с таким типом. Введите другой тип");
@@ -51,7 +51,7 @@ public class AdminService : IAdminService
         }
         
         Console.WriteLine("Введите цену товара");
-        int price = int.Parse(Console.ReadLine());
+        int price = CustomInput.ReadNumber();
         
         Console.WriteLine("Товар добавлен, ебана");
     }
