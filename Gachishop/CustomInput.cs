@@ -2,9 +2,9 @@
 
 namespace Gachishop;
 
-class CustomInput : ICustomInput
+class CustomInput
 {
-    public string ReadText()
+    public static string ReadText()
     { 
         string enteredValue = "";
 
@@ -34,7 +34,7 @@ class CustomInput : ICustomInput
         }
     }
 
-    public string ReadPassword()
+    public static string ReadPassword()
     {
         string enteredValue = "";
 
@@ -64,7 +64,7 @@ class CustomInput : ICustomInput
         }
     }
 
-    public int ReadNumber()
+    public static int ReadNumber()
     {
         string enteredValue = "";
         string regexp = @"D[0-9]";
