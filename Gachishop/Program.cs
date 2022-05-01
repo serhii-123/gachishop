@@ -6,14 +6,9 @@ class Program
 {
     static void Main(string[] args)
     {
-        string[] productTypes = { "Bondage", "Latex glove" };
-        AdminService adminService = new AdminService(productTypes);
+        string[] productTypes = { "Latex glove", "Bondage"};
         LoginService loginService = new LoginService();
+        AdminService adminService = new AdminService(productTypes);
         loginService.Login();
-        
-        if (loginService.AuthorizedUser.IsAdmin)
-        {
-            adminService.Start();
-        }
     }
 }
