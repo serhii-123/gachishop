@@ -10,6 +10,6 @@ public interface IProduct
     string Description { get; set; }
     string Type { get; set; }
     int Price { get; set; }
-    int NumberOfUnits { get; set; }
+    int Quantity { get; set; }
     int Discount { get; set; }
 }
