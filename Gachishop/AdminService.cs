@@ -1,4 +1,6 @@
-﻿namespace Gachishop;
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace Gachishop;
 
 public class AdminService : IAdminService
 {
@@ -33,7 +35,7 @@ public class AdminService : IAdminService
     private void AddProduct()
     {
         string name, description, type;
-        int price;
+        int price, quantity, discount;
         
         Console.WriteLine("Введите имя товара");
         name = CustomInput.ReadText();
@@ -57,7 +59,16 @@ public class AdminService : IAdminService
         
         Console.WriteLine("Введите цену товара");
         price = CustomInput.ReadNumber();
-        
+        Console.WriteLine("Введите количество единиц товара");
+        quantity = CustomInput.ReadNumber();
+        Console.WriteLine("Введите скидку на товар");
+        discount = CustomInput.ReadNumber();
         Console.WriteLine("Товар добавлен");
+        using (ProductContext ctx = new ProductContext())
+        {
+            Product newProduct = new Product(name, description, type, price, quantity, discount);
+            ctx.Products.Add(newProduct);
+            ctx.SaveChanges();
+        }
     }
 }
