@@ -13,13 +13,13 @@ public class Product : IProduct
     public int Quantity { get; set; }
     public int Discount { get; set; }
 
-    public Product(string name, string description, string type, int price, int numberOfUnits, int discount)
+    public Product(string name, string description, string type, int price, int quantity, int discount)
     {
         Name = name;
         Description = description;
         Type = type;
         Price = price;
-        NumberOfUnits = numberOfUnits;
+        Quantity = quantity;
         Discount = discount;
     }
 }
