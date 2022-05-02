@@ -5,10 +5,6 @@ namespace Gachishop;
 public class UserContext : DbContext
 {
     public DbSet<User> Users { get; set; }
-    public UserContext()
-    {
-        
-    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
