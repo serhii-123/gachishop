@@ -14,23 +14,30 @@ public class AdminService : IAdminService
     public void Start()
     {
         bool done = false;
-        string enteredText;
+        int enteredNumber;
         
         while (!done)
         {
-            Console.WriteLine("Доступные команды: \nДобавить товар\nВыйти");
-            enteredText = CustomInput.ReadText();
+            Console.WriteLine("Введите номер команды: \n(1)Добавить товар\n(2)Выйти");
+            enteredNumber = CustomInput.ReadNumber();
 
-            switch (enteredText)
+            switch (enteredNumber)
             {
-                case("Добавить товар"):
+                case(1):
+                    Console.Clear();
                     AddProduct();
+                    Console.Clear();
                     break;
-                case("Выйти"):
+                case(2):
                     done = true;
+                    break;
+                default:
+                    Console.WriteLine("Нет команды с данной цифрой");
                     break;
             }
         }
+        Console.Clear();
+        
     }
 
     private void AddProduct()
@@ -49,7 +56,8 @@ public class AdminService : IAdminService
             ctx.SaveChanges();
         }
         
-        Console.WriteLine("Товар добавлен");
+        Console.WriteLine("Товар добавлен. Нажмите любую клавишу");
+        Console.ReadKey();
     }
 
     private string GetName()

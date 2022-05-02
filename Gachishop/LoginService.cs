@@ -9,8 +9,7 @@ namespace Gachishop
     internal class LoginService
     {
        public IUser AuthorizedUser { get; set; }
-
-        public void Login()
+       public void Login()
         {
             using (UserContext ctx = new UserContext())
             {
@@ -24,16 +23,18 @@ namespace Gachishop
                     User user = list.FirstOrDefault(u => (u.Name == name) && (u.Password == password));
                     if (user == null)
                     {
-                        Console.WriteLine("Дурачок.");
+                        Console.Clear();
+                        Console.WriteLine("Wrong name or password");
+                        
                     }
                     else
                     {
-                        Console.WriteLine("Welcome to the club buddy");
                         AuthorizedUser = user;
                         return;
                     }
                 }
             }
+            Console.Clear();
         }
         static string CheckPassword()
         {

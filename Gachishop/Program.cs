@@ -9,10 +9,15 @@ class Program
         string[] productTypes = { "Latex glove", "Bondage"};
         LoginService loginService = new LoginService();
         AdminService adminService = new AdminService(productTypes);
-        loginService.Login();
-        if (loginService.AuthorizedUser.IsAdmin)
+
+        while (true)
         {
-            adminService.Start();
+            loginService.Login();
+            Console.Clear();
+            if (loginService.AuthorizedUser.IsAdmin)
+            {
+                adminService.Start();
+            }
         }
     }
 }
