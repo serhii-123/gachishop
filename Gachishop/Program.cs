@@ -9,6 +9,7 @@ class Program
         string[] productTypes = { "Latex glove", "Bondage"};
         LoginService loginService = new LoginService();
         AdminService adminService = new AdminService(productTypes);
+        BuyerService buyerService;
 
         while (true)
         {
@@ -17,6 +18,11 @@ class Program
             if (loginService.AuthorizedUser.IsAdmin)
             {
                 adminService.Start();
+            }
+            else
+            {
+                buyerService = new BuyerService(loginService.AuthorizedUser);
+                buyerService.Start();
             }
         }
     }
