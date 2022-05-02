@@ -10,5 +10,9 @@ class Program
         LoginService loginService = new LoginService();
         AdminService adminService = new AdminService(productTypes);
         loginService.Login();
+        if (loginService.AuthorizedUser.IsAdmin)
+        {
+            adminService.Start();
+        }
     }
 }
