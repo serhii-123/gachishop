@@ -16,11 +16,11 @@ namespace Gachishop
                 IEnumerable<User> list = ctx.Users.ToList();
                 while(true)
                 {
-                    Console.WriteLine("Enter name:");
+                    Console.WriteLine("Enter username:");
                     string name = CheckName();
                     Console.WriteLine("Enter password:");
                     string password = CheckPassword();
-                    User user = list.FirstOrDefault(u => (u.Name == name) && (u.Password == password));
+                    User user = list.FirstOrDefault(u => (u.Username == name) && (u.Password == password));
                     if (user == null)
                     {
                         Console.Clear();
