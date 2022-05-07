@@ -2,7 +2,7 @@
 
 namespace Gachishop;
 
-public class Shop : DbContext
+public class ShopContext : DbContext
 {
     public DbSet<User> Users { get; set; }
     public DbSet<Product> Products { get; set; }
