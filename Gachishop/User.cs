@@ -7,20 +7,20 @@ public class User : IUser
     [Key]
     public int Id { get; set; }
 
-    public string Name { get; set; }
+    public string Username { get; set; }
     public string Password { get; set; }
+    public string Name { get; set; }
+    public string Surname { get; set; }
     public bool IsAdmin { get; set; }
     public int Discount { get; set; }
 
-    public User(string name, string password, bool isAdmin, int discount)
+    public User(string username, string password, string name, string surname, bool isAdmin, int discount)
     {
-        Name = name;
+        Username = username;
         Password = password;
+        Name = name;
+        Surname = surname;
         IsAdmin = isAdmin;
         Discount = discount;
-    }
-    public bool CheckAccess(string name, string password)
-    {
-        return (Name == name) && (Password == password);
     }
 }
