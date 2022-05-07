@@ -49,7 +49,7 @@ public class AdminService : IAdminService
         int quantity = GetQuantity();
         int discount = GetDiscount();
 
-        using (ProductContext ctx = new ProductContext())
+        using (ShopContext ctx = new ShopContext())
         {
             Product newProduct = new Product(name, description, type, price, quantity, discount);
             ctx.Products.Add(newProduct);

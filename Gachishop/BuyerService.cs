@@ -49,7 +49,7 @@ public class BuyerService : IBuyerService
     {
         int number = 0;
         
-        using (ProductContext ctx = new ProductContext())
+        using (ShopContext ctx = new ShopContext())
         {
             IEnumerable<Product> list = ctx.Products.ToList();
 

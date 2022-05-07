@@ -11,7 +11,7 @@ namespace Gachishop
        public IUser AuthorizedUser { get; set; }
        public void Login()
         {
-            using (UserContext ctx = new UserContext())
+            using(ShopContext ctx = new ShopContext())
             {
                 IEnumerable<User> list = ctx.Users.ToList();
                 while(true)
