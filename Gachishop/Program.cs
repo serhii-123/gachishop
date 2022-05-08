@@ -6,9 +6,8 @@ class Program
 {
     static void Main(string[] args)
     {
-        string[] productTypes = { "Latex glove", "Bondage"};
         LoginService loginService = new LoginService();
-        AdminService adminService = new AdminService(productTypes);
+        AdminService adminService = new AdminService();
         BuyerService buyerService;
 
         while (true)

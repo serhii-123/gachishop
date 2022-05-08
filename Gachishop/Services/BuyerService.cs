@@ -28,7 +28,7 @@ public class BuyerService : IBuyerService
             {
                 case(1):
                     Console.Clear();
-                    ShowProducts();
+                    //ShowProducts();
                     Console.WriteLine("Нажмите любую кнопку");
                     Console.ReadKey();
                     Console.Clear();
@@ -45,22 +45,22 @@ public class BuyerService : IBuyerService
         
     }
 
-    private void ShowProducts()
-    {
-        int number = 0;
-        
-        using (ShopContext ctx = new ShopContext())
-        {
-            IEnumerable<Product> list = ctx.Products.ToList();
-
-            foreach (Product product in list)
-            {
-                Console.WriteLine(product.Name);
-                Console.WriteLine(product.Description);
-                Console.WriteLine($"Номер товара: {number} | Тип: {product.Type} | Цена: {product.Price}$ | Кол-во: {product.Quantity} | Cкидка: {product.Discount}%");
-                Console.WriteLine("----------");
-                number++;
-            }
-        }
-    }
+    // private void ShowProducts()
+    // {
+    //     int number = 0;
+    //     
+    //     using (ShopContext ctx = new ShopContext())
+    //     {
+    //         IEnumerable<Product> list = ctx.Products.ToList();
+    //
+    //         foreach (Product product in list)
+    //         {
+    //             Console.WriteLine(product.Name);
+    //             Console.WriteLine(product.Description);
+    //             Console.WriteLine($"Номер товара: {number} | Тип: {product.Type} | Цена: {product.Price}$ | Кол-во: {product.Quantity} | Cкидка: {product.Discount}%");
+    //             Console.WriteLine("----------");
+    //             number++;
+    //         }
+    //     }
+    // }
 }

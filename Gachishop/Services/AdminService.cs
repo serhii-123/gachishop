@@ -4,18 +4,10 @@ namespace Gachishop;
 
 public class AdminService : IAdminService
 {
-    private string[] _productTypes;
-
-    public AdminService(string[] productTypes)
-    {
-        _productTypes = productTypes;
-    }
-    
     public void Start()
     {
         bool done = false;
         int enteredNumber;
-        
         while (!done)
         {
             Console.WriteLine("Введите номер команды: \n(1)Добавить товар\n(2)Выйти");
@@ -44,14 +36,20 @@ public class AdminService : IAdminService
     {
         string name = GetName();
         string description = GetDescription();
-        string type = GetType();
+        string category = GetCategory();
         int price = GetPrice();
         int quantity = GetQuantity();
         int discount = GetDiscount();
 
         using (ShopContext ctx = new ShopContext())
         {
-            Product newProduct = new Product(name, description, type, price, quantity, discount);
+            int categoryId = ctx.ProductCategories.First(c => c.Name == category).Id;
+            ProductInventory inventory = new ProductInventory(quantity);
+            ctx.ProductInventories.Add(inventory);
+            ctx.SaveChanges();
+            
+            Product newProduct = new Product(name, description, price, discount, categoryId, inventory.Id);
+            
             ctx.Products.Add(newProduct);
             ctx.SaveChanges();
         }
@@ -93,15 +91,22 @@ public class AdminService : IAdminService
         }
     }
 
-    private string GetType()
+    private string GetCategory()
     {
         string type;
-        Console.WriteLine("Введите тип товара");
-        type = CustomInput.ReadText();
+        string[] productCategories;
+        
+        using (ShopContext ctx = new ShopContext())
+        {
+            productCategories = ctx.ProductCategories.Select(c => c.Name).ToArray();
+        }
 
+        Console.WriteLine("Введите категорию товара");
+        type = CustomInput.ReadText();
+        
         while (true)
         {
-            if (!_productTypes.Contains(type))
+            if (!productCategories.Contains(type))
             {
                 Console.WriteLine("Неверный тип товара. Введите другой");
                 type = CustomInput.ReadText();
