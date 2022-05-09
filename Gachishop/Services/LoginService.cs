@@ -34,7 +34,6 @@ namespace Gachishop
                     }
                 }
             }
-            Console.Clear();
         }
         static string CheckPassword()
         {

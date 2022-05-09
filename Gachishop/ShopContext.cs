@@ -9,6 +9,8 @@ public class ShopContext : DbContext
     public DbSet<Product> Products { get; set; }
     public DbSet<ProductCategory> ProductCategories { get; set; }
     public DbSet<ProductInventory> ProductInventories { get; set; }
+    public DbSet<Cart> Carts { get; set; }
+    public DbSet<CartItem> CartItems { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -16,6 +18,8 @@ public class ShopContext : DbContext
         modelBuilder.Entity<Product>().HasKey(p => p.Id);
         modelBuilder.Entity<ProductCategory>().HasKey(c => c.Id);
         modelBuilder.Entity<ProductInventory>().HasKey(i => i.Id);
+        modelBuilder.Entity<Cart>().HasKey(c => c.Id);
+        modelBuilder.Entity<CartItem>().HasKey(i => i.Id);
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

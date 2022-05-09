@@ -1,4 +1,3 @@
-
 namespace Gachishop;
 
 public class BuyerService
@@ -64,7 +63,11 @@ public class BuyerService
                 int productQuantity = ctx.ProductInventories.First(i => i.Id == product.InventoryId).Quantity;
                 Console.WriteLine(product.Name);
                 Console.WriteLine(product.Description);
-                Console.WriteLine($"Номер товара: {product.Id} | Категория: {productCategory} | Цена: {product.Price}$ | Кол-во: {productQuantity} | Cкидка: {product.Discount}%");
+                Console.WriteLine($"Номер товара: {product.Id} " +
+                                  $"| Категория: {productCategory} " +
+                                  $"| Цена: {product.Price}$ |" +
+                                  $" Кол-во: {productQuantity} |" +
+                                  $" Cкидка: {product.Discount}%");
                 Console.WriteLine("----------");
             }
         }
@@ -74,10 +77,22 @@ public class BuyerService
     {
         int productId = BuyerServiceDataParser.GetProductId();
         int productQuantity = BuyerServiceDataParser.GetProductQuantity(productId);
-
+        
         using (ShopContext ctx = new ShopContext())
         {
+            Product product = ctx.Products.First(p => p.Id == productId);
+            Cart cart = ctx.Carts.FirstOrDefault(c => c.Id == productId);
             
+            if (cart == null)
+            {
+                cart = new Cart(_buyer.Id);
+                ctx.Carts.Add(cart);
+                ctx.SaveChanges();
+            }
+
+            CartItem cartItem = new CartItem(cart.Id, productId, productQuantity);
+            ctx.CartItems.Add(cartItem);
+            ctx.SaveChanges();
         }
     }
 }
