@@ -1,11 +1,11 @@
 
 namespace Gachishop;
 
-public class BuyerService : IBuyerService
+public class BuyerService
 {
-    private IUser _buyer;
+    private User _buyer;
 
-    public BuyerService(IUser buyer)
+    public BuyerService(User buyer)
     {
         _buyer = buyer;
     }

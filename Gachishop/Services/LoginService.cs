@@ -8,7 +8,7 @@ namespace Gachishop
 {
     internal class LoginService
     {
-       public IUser AuthorizedUser { get; set; }
+       public User AuthorizedUser { get; set; }
        public void Login()
         {
             using(ShopContext ctx = new ShopContext())

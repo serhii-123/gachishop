@@ -2,7 +2,7 @@
 
 namespace Gachishop;
 
-public class User : IUser
+public class User
 {
     [Key]
     public int Id { get; set; }

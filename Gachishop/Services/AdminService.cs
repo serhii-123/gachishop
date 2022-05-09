@@ -2,7 +2,7 @@
 
 namespace Gachishop;
 
-public class AdminService : IAdminService
+public class AdminService
 {
     public void Start()
     {

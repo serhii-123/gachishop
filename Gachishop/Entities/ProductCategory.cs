@@ -2,7 +2,7 @@
 
 namespace Gachishop;
 
-public class ProductCategory : IProductCategory
+public class ProductCategory
 {
     [Key]
     public int Id { get; set; }
