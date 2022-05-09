@@ -2,23 +2,38 @@
 
 public static class BuyerServiceDataParser
 {
-    public static int GetProductId()
+    public static int GetProductId(User user)
     {
         int id;
         
         Console.WriteLine("Введите номер товара");
         id = CustomInput.ReadNumber();
-
+        
         using (ShopContext ctx = new ShopContext())
         {
             while (true)
             {
                 Product product = ctx.Products.FirstOrDefault(p => p.Id == id);
+                
                 if (product == null)
                 {
                     Console.WriteLine("Ошибка! Нет товара с таким номером. Введите другой");
                     id = CustomInput.ReadNumber();
                     continue;
+                }
+
+                Cart cart = ctx.Carts.FirstOrDefault(c => c.UserId == user.Id);
+
+                if (cart != null)
+                {
+                    int[] cartItems = ctx.CartItems.Select(i => i).Where(i => i.CartId == cart.Id).Select(i => i.Id).ToArray();
+
+                    if (cartItems.Contains(id))
+                    {
+                        Console.WriteLine("Ошибка! Товар с таким номером уже есть в корзине. Введите другой");
+                        id = CustomInput.ReadNumber();
+                        continue;
+                    }
                 }
                 
                 bool quantityIsNotNull = ctx.ProductInventories.First(c => c.Id == product.CategoryId).Quantity > 0;

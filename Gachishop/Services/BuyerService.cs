@@ -44,6 +44,7 @@ public class BuyerService
                     Console.Clear();
                     break;
                 default:
+                    Console.Clear();
                     Console.WriteLine("Нет команды с данной цифрой");
                     break;
             }
@@ -75,7 +76,7 @@ public class BuyerService
 
     private void AddProductToCart()
     {
-        int productId = BuyerServiceDataParser.GetProductId();
+        int productId = BuyerServiceDataParser.GetProductId(_buyer);
         int productQuantity = BuyerServiceDataParser.GetProductQuantity(productId);
         
         using (ShopContext ctx = new ShopContext())
@@ -94,5 +95,6 @@ public class BuyerService
             ctx.CartItems.Add(cartItem);
             ctx.SaveChanges();
         }
+        Console.WriteLine("Товар добавлен в корзину");
     }
 }
