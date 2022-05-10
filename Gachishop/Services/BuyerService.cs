@@ -47,7 +47,11 @@ public class BuyerService
                     Console.Clear();
                     break;
                 case(4):
+                    Console.Clear();
                     DeleteProductFromCart();
+                    Console.WriteLine("Нажмите любую кнопку");
+                    Console.ReadKey();
+                    Console.Clear();
                     break;
                 case(5):
                     done = true;
@@ -106,6 +110,12 @@ public class BuyerService
         {
             Cart cart = ctx.Carts.First(c => c.UserId == _buyer.Id);
             CartItem[] cartItems = ctx.CartItems.Select(i => i).Where(i => i.CartId == cart.Id).ToArray();
+
+            if (cartItems.Length == 0)
+            {
+                Console.WriteLine("Корзина пуста");
+                return;
+            }
 
             foreach (CartItem cartItem in cartItems)
             {
