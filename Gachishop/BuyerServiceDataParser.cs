@@ -1,4 +1,6 @@
-﻿namespace Gachishop;
+﻿using System.Diagnostics;
+
+namespace Gachishop;
 
 public static class BuyerServiceDataParser
 {
@@ -22,21 +24,17 @@ public static class BuyerServiceDataParser
                     continue;
                 }
 
-                Cart cart = ctx.Carts.FirstOrDefault(c => c.UserId == user.Id);
+                Cart cart = ctx.Carts.First(c => c.UserId == user.Id);
+                int[] cartItems = ctx.CartItems.Select(i => i).Where(i => i.CartId == cart.Id).Select(i => i.ProductId).ToArray();
 
-                if (cart != null)
+                if (cartItems.Contains(id))
                 {
-                    int[] cartItems = ctx.CartItems.Select(i => i).Where(i => i.CartId == cart.Id).Select(i => i.Id).ToArray();
-
-                    if (cartItems.Contains(id))
-                    {
-                        Console.WriteLine("Ошибка! Товар с таким номером уже есть в корзине. Введите другой");
-                        id = CustomInput.ReadNumber();
-                        continue;
-                    }
+                    Console.WriteLine("Ошибка! Товар с таким номером уже есть в корзине. Введите другой");
+                    id = CustomInput.ReadNumber();
+                    continue;
                 }
-                
-                bool quantityIsNotNull = ctx.ProductInventories.First(c => c.Id == product.CategoryId).Quantity > 0;
+
+                bool quantityIsNotNull = ctx.ProductInventories.First(i => i.Id == product.InventoryId).Quantity > 0;
 
                 if (!quantityIsNotNull)
                 {
