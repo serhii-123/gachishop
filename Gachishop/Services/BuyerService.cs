@@ -79,9 +79,9 @@ public class BuyerService
                 Console.WriteLine(product.Description);
                 Console.WriteLine($"Номер товара: {product.Id} " +
                                   $"| Категория: {productCategory} " +
-                                  $"| Цена: {product.Price}$ |" +
-                                  $" Кол-во: {productQuantity} |" +
-                                  $" Cкидка: {product.Discount}%");
+                                  $"| Цена: {product.Price}$ " +
+                                  $"| Кол-во: {productQuantity} " +
+                                  $"| Cкидка: {product.Discount}%");
                 Console.WriteLine("----------");
             }
         }
@@ -120,7 +120,10 @@ public class BuyerService
             foreach (CartItem cartItem in cartItems)
             {
                 Product product = ctx.Products.First(p => p.Id == cartItem.ProductId);
-                Console.WriteLine($"Имя: {product.Name} | Цена: {product.Price} | Кол-во: {cartItem.Quantity}");
+                Console.WriteLine($"Имя: {product.Name} " +
+                                  $"| Номер: {product.Id} " +
+                                  $"| Цена: {product.Price}$ " +
+                                  $"| Кол-во: {cartItem.Quantity}");
                 Console.WriteLine("----------");
             }
         }
@@ -128,6 +131,20 @@ public class BuyerService
 
     private void DeleteProductFromCart()
     {
+        int productId = BuyerServiceDataParser.GetProductIdForDelete(_buyer);
+
+        using (ShopContext ctx = new ShopContext())
+        {
+            Cart cart = ctx.Carts.
+                First(c => c.UserId == _buyer.Id);
+            CartItem cartItem = ctx.CartItems
+                .Select(i => i)
+                .Where(i => i.CartId == cart.Id)
+                .First(i => i.ProductId == productId);
+            ctx.CartItems.Remove(cartItem);
+            ctx.SaveChanges();
+        }
         
+        Console.WriteLine("Товар удален из корзины");
     }
 }

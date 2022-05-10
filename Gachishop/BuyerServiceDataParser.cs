@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Xml.Schema;
 
 namespace Gachishop;
 
@@ -72,6 +73,37 @@ public static class BuyerServiceDataParser
                 quantity = CustomInput.ReadNumber();
             }
             else return quantity;
+        }
+    }
+
+    public static int GetProductIdForDelete(User user)
+    {
+        int productId;
+        
+        Console.WriteLine("Введите номер товара");
+        productId = CustomInput.ReadNumber();
+
+        using (ShopContext ctx = new ShopContext())
+        {
+            Cart cart = ctx.Carts.
+                First(c => c.UserId == user.Id);
+            int[] productIds = ctx.CartItems
+                .Select(i => i)
+                .Where(i => i.CartId == cart.Id)
+                .Select(i => i.ProductId)
+                .ToArray();
+            
+            while (true)
+            {
+                if (!productIds.Contains(productId))
+                {
+                    Console.WriteLine("Ошибка! В корзине нет товара с таким номером");
+                    productId = CustomInput.ReadNumber();
+                    continue;
+                }
+
+                return productId;
+            }
         }
     }
 }
