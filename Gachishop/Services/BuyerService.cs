@@ -19,7 +19,12 @@ public class BuyerService
 
         while (!done)
         {
-            Console.WriteLine("Введите номер команды: \n(1)Показать товары \n(2)Добавить товар в корзину \n(3)Показать содержимое корзины \n(4)Удалить товар из корзины \n(5)Выйти");
+            Console.WriteLine("Введите номер команды: " +
+                              "\n(1)Показать товары " +
+                              "\n(2)Добавить товар в корзину " +
+                              "\n(3)Показать содержимое корзины " +
+                              "\n(4)Удалить товар из корзины " +
+                              "\n(5)Выйти");
             
             enteredNumber = CustomInput.ReadNumber();
 
@@ -73,8 +78,12 @@ public class BuyerService
 
             foreach (Product product in list)
             {
-                string productCategory = ctx.ProductCategories.First(c => c.Id == product.CategoryId).Name;
-                int productQuantity = ctx.ProductInventories.First(i => i.Id == product.InventoryId).Quantity;
+                string productCategory = ctx.ProductCategories
+                    .First(c => c.Id == product.CategoryId)
+                    .Name;
+                int productQuantity = ctx.ProductInventories
+                    .First(i => i.Id == product.InventoryId)
+                    .Quantity;
                 Console.WriteLine(product.Name);
                 Console.WriteLine(product.Description);
                 Console.WriteLine($"Номер товара: {product.Id} " +

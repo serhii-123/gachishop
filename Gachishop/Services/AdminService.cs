@@ -43,7 +43,9 @@ public class AdminService
 
         using (ShopContext ctx = new ShopContext())
         {
-            int categoryId = ctx.ProductCategories.First(c => c.Name == category).Id;
+            int categoryId = ctx.ProductCategories
+                .First(c => c.Name == category)
+                .Id;
             ProductInventory inventory = new ProductInventory(quantity);
             ctx.ProductInventories.Add(inventory);
             ctx.SaveChanges();
