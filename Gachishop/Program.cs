@@ -1,27 +1,28 @@
 ﻿using System;
 using Gachishop;
+using Gachishop.Controllers;
 using Microsoft.EntityFrameworkCore;
 
 class Program
 {
     static void Main(string[] args)
     {
-        LoginService loginService = new LoginService();
-        AdminService adminService = new AdminService();
-        BuyerService buyerService;
+        LoginController loginController = new LoginController();
+        AdminController adminController = new AdminController();
+        BuyerContoller buyerContoller;
 
         while (true)
         {
-            loginService.Login();
+            loginController.Login();
             Console.Clear();
-            if (loginService.AuthorizedUser.IsAdmin)
+            if (loginController.AuthorizedUser.IsAdmin)
             {
-                adminService.Start();
+                adminController.Start();
             }
             else
             {
-                buyerService = new BuyerService(loginService.AuthorizedUser);
-                buyerService.Start();
+                buyerContoller = new BuyerContoller(loginController.AuthorizedUser);
+                buyerContoller.Start();
             }
         }
     }
