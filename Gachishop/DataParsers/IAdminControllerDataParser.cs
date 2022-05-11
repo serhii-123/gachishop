@@ -8,4 +8,5 @@ public interface IAdminControllerDataParser
     int GetProductPrice();
     int GetProductQuantity();
     int GetProductDiscount();
+    string GetProductCategoryName();
 }

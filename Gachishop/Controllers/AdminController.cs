@@ -17,7 +17,10 @@ public class AdminController
         int enteredNumber;
         while (!done)
         {
-            Console.WriteLine("Введите номер команды: \n(1)Добавить товар\n(2)Выйти");
+            Console.WriteLine("Введите номер команды: \n" +
+                              "(1)Добавить товар \n" +
+                              "(2)Добавить категорию \n" +
+                              "(3)Выйти");
             enteredNumber = CustomInput.ReadNumber();
 
             switch (enteredNumber)
@@ -25,9 +28,18 @@ public class AdminController
                 case(1):
                     Console.Clear();
                     AddProduct();
+                    Console.WriteLine("Нажмите любую клавишу");
+                    Console.ReadKey();
                     Console.Clear();
                     break;
                 case(2):
+                    Console.Clear();
+                    AddCategory();
+                    Console.WriteLine("Нажмите любую клавишу");
+                    Console.ReadKey();
+                    Console.Clear();
+                    break;
+                case(3):
                     done = true;
                     break;
                 default:
@@ -50,7 +62,15 @@ public class AdminController
 
         _service.AddProduct(name, description, category, price, quantity, discount);
 
-        Console.WriteLine("Товар добавлен. Нажмите любую клавишу");
-        Console.ReadKey();
+        Console.WriteLine("Товар добавлен");
+    }
+
+    private void AddCategory()
+    {
+        string categoryName = _dataParser.GetProductCategoryName();
+        ProductCategory productCategory = new ProductCategory(categoryName);
+        
+        _service.AddProductCategory(productCategory);
+        Console.WriteLine("Категория добавлена");
     }
 }

@@ -30,4 +30,13 @@ public class AdminService : IAdminService
             ctx.SaveChanges();
         }
     }
+
+    public void AddProductCategory(ProductCategory productCategory)
+    {
+        using (ShopContext ctx = new ShopContext())
+        {
+            ctx.ProductCategories.Add(productCategory);
+            ctx.SaveChanges();
+        }
+    }
 }

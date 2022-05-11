@@ -13,6 +13,7 @@ public class AdminControllerDataParser : IAdminControllerDataParser
     public string GetProductName()
     {
         string name;
+        
         Console.WriteLine("Введите имя товара");
         name = CustomInput.ReadText();
 
@@ -29,6 +30,7 @@ public class AdminControllerDataParser : IAdminControllerDataParser
     public string GetProductDescription()
     {
         string description;
+        
         Console.WriteLine("Введите описание товара");
         description = CustomInput.ReadText();
 
@@ -55,7 +57,7 @@ public class AdminControllerDataParser : IAdminControllerDataParser
         {
             if (!productCategories.Contains(type))
             {
-                Console.WriteLine("Неверный тип товара. Введите другой");
+                Console.WriteLine("Неверная категория товара. Введите другую");
                 type = CustomInput.ReadText();
             }
             else return type;
@@ -65,6 +67,7 @@ public class AdminControllerDataParser : IAdminControllerDataParser
     public int GetProductPrice()
     {
         int price;
+        
         Console.WriteLine("Введите цену товара");
         price = CustomInput.ReadNumber();
 
@@ -82,6 +85,7 @@ public class AdminControllerDataParser : IAdminControllerDataParser
     public int GetProductQuantity()
     {
         int quantity;
+        
         Console.WriteLine("Введите кол-во единиц товара");
         quantity = CustomInput.ReadNumber();
 
@@ -99,6 +103,7 @@ public class AdminControllerDataParser : IAdminControllerDataParser
     public int GetProductDiscount()
     {
         int discount;
+        
         Console.WriteLine("Введите скидку на товар");
         discount = CustomInput.ReadNumber();
 
@@ -108,8 +113,30 @@ public class AdminControllerDataParser : IAdminControllerDataParser
             {
                 Console.WriteLine("Скидка не может быть больше 99-ти процентов. Введите другую");
                 discount = CustomInput.ReadNumber();
+                continue;
             }
-            else return discount;
+            
+            return discount;
+        }
+    }
+
+    public string GetProductCategoryName()
+    {
+        string categoryName;
+        
+        Console.WriteLine("Введите имя категории");
+        categoryName = CustomInput.ReadText();
+
+        while (true)
+        {
+            if (categoryName.Length < 3)
+            {
+                Console.WriteLine("Имя категории слишком короткое. Введите другое");
+                categoryName = CustomInput.ReadText();
+                continue;
+            }
+
+            return categoryName;
         }
     }
 }
