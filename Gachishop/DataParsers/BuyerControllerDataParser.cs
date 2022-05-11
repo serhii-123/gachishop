@@ -22,7 +22,7 @@ public class BuyerControllerDataParser : IBuyerControllerDataParser
         {
             while (true)
             {
-                Product product = ctx.Products.FirstOrDefault(p => p.Id == id);
+                Product product = _service.FindProductById(id);
                 
                 if (product == null)
                 {
@@ -30,9 +30,9 @@ public class BuyerControllerDataParser : IBuyerControllerDataParser
                     id = CustomInput.ReadNumber();
                     continue;
                 }
-
-                Cart cart = ctx.Carts.First(c => c.UserId == user.Id);
-                int[] cartItems = ctx.CartItems.Select(i => i).Where(i => i.CartId == cart.Id).Select(i => i.ProductId).ToArray();
+                
+                Cart cart = _service.FindCartByUserId(user.Id);
+                int[] cartItems = _service.GetCartItemIdsByCartId(cart.Id);
 
                 if (cartItems.Contains(id))
                 {
@@ -40,9 +40,9 @@ public class BuyerControllerDataParser : IBuyerControllerDataParser
                     id = CustomInput.ReadNumber();
                     continue;
                 }
-
+                //Вот тут надо закончить
                 bool quantityIsNotNull = ctx.ProductInventories.First(i => i.Id == product.InventoryId).Quantity > 0;
-
+                
                 if (!quantityIsNotNull)
                 {
                     Console.WriteLine("Ошибка! Данный товар сейчас не доступен. Введите другой номер");
