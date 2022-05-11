@@ -3,9 +3,15 @@ using System.Xml.Schema;
 
 namespace Gachishop;
 
-public static class BuyerControllerDataParser
+public class BuyerControllerDataParser : IBuyerControllerDataParser
 {
-    public static int GetProductId(User user)
+    private IBuyerService _service;
+
+    public BuyerControllerDataParser(IBuyerService service)
+    {
+        _service = service;
+    }
+    public int GetProductId(User user)
     {
         int id;
         
@@ -51,7 +57,7 @@ public static class BuyerControllerDataParser
         return id;
     }
 
-    public static int GetProductQuantity(int productId)
+    public int GetProductQuantity(int productId)
     {
         int quantity, currentQuantity;
         Product product;
@@ -76,7 +82,7 @@ public static class BuyerControllerDataParser
         }
     }
 
-    public static int GetProductIdForDelete(User user)
+    public int GetProductIdForDelete(User user)
     {
         int productId;
         

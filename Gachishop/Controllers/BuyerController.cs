@@ -3,10 +3,14 @@
 public class BuyerController
 {
     private User _buyer;
+    private IBuyerService _service;
+    private IBuyerControllerDataParser _dataParser; 
 
-    public BuyerController(User buyer)
+    public BuyerController(User buyer, IBuyerService service, IBuyerControllerDataParser dataParser)
     {
         _buyer = buyer;
+        _service = service;
+        _dataParser = dataParser;
     }
 
     public void Start()
@@ -98,8 +102,8 @@ public class BuyerController
 
     private void AddProductToCart()
     {
-        int productId = BuyerControllerDataParser.GetProductId(_buyer);
-        int productQuantity = BuyerControllerDataParser.GetProductQuantity(productId);
+        int productId = _dataParser.GetProductId(_buyer);
+        int productQuantity = _dataParser.GetProductQuantity(productId);
 
         using (ShopContext ctx = new ShopContext())
         {
@@ -140,7 +144,7 @@ public class BuyerController
 
     private void DeleteProductFromCart()
     {
-        int productId = BuyerControllerDataParser.GetProductIdForDelete(_buyer);
+        int productId = _dataParser.GetProductIdForDelete(_buyer);
 
         using (ShopContext ctx = new ShopContext())
         {

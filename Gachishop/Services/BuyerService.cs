@@ -1,6 +1,6 @@
 namespace Gachishop;
 
-public class BuyerService
+public class BuyerService : IBuyerService
 {
     
 }

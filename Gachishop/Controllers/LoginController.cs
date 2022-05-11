@@ -2,104 +2,35 @@
 
 public class LoginController
 {
-   public User AuthorizedUser { get; set; }
-   public void Login()
+    private ILoginService _loginService;
+
+    public LoginController(ILoginService loginService)
     {
-        using(ShopContext ctx = new ShopContext())
-        {
-            IEnumerable<User> list = ctx.Users.ToList();
-            while(true)
-            {
-                Console.WriteLine("Enter username:");
-                string name = CheckName();
-                Console.WriteLine("Enter password:");
-                string password = CheckPassword();
-                User user = list.FirstOrDefault(u => (u.Username == name) && (u.Password == password));
-                if (user == null)
-                {
-                    Console.Clear();
-                    Console.WriteLine("Wrong name or password");
-                    
-                }
-                else
-                {
-                    AuthorizedUser = user;
-                    return;
-                }
-            }
-        }
+        _loginService = loginService;
     }
-    static string CheckPassword()
+    
+    public User AuthorizedUser { get; set; }
+    public void Login()
     {
-        try
+        while(true)
         {
-            string enteredVal = "";
-
-            while (true)
+            Console.WriteLine("Enter username:");
+            string name = CustomInput.ReadText();
+            Console.WriteLine("Enter password:");
+            string password = CustomInput.ReadPassword();
+            
+            User user = _loginService.FindUser(name, password);
+            
+            if (user == null)
             {
-                ConsoleKeyInfo key = Console.ReadKey(true);
-
-                if (key.Key != ConsoleKey.Backspace && key.Key != ConsoleKey.Enter)
-                {
-                    enteredVal += key.KeyChar;
-                    Console.Write("*");
-                    continue;
-                }
-
-                if (key.Key == ConsoleKey.Backspace && enteredVal.Length != 0)
-                {
-                    enteredVal = enteredVal.Substring(0, (enteredVal.Length - 1));
-                    Console.Write("\b \b");
-                    continue;
-                }
-
-                if (key.Key == ConsoleKey.Enter && !string.IsNullOrWhiteSpace(enteredVal))
-                {
-                    Console.WriteLine("");
-                    return enteredVal;
-                }
+                Console.Clear();
+                Console.WriteLine("Wrong name or password");
             }
-        }
-        catch
-        {
-            Console.WriteLine("Error");
-            return "";
-        }
-    }
-    static string CheckName()
-    {
-        try
-        {
-            string enteredVal = "";
-
-            while (true)
+            else
             {
-                ConsoleKeyInfo key = Console.ReadKey(true);
-
-                if (key.Key != ConsoleKey.Backspace && key.Key != ConsoleKey.Enter)
-                {
-                    enteredVal += key.KeyChar;
-                    Console.Write(key.KeyChar);
-                    continue;
-                }
-
-                if (key.Key == ConsoleKey.Backspace && enteredVal.Length != 0)
-                {
-                    enteredVal = enteredVal.Substring(0, (enteredVal.Length - 1));
-                    Console.Write("\b \b");
-                    continue;
-                }
-
-                if (key.Key == ConsoleKey.Enter && !string.IsNullOrWhiteSpace(enteredVal))
-                {
-                    Console.WriteLine("");
-                    return enteredVal;
-                }
+                AuthorizedUser = user;
+                return;
             }
-        }
-        catch
-        {
-            return "";
         }
     }
 }

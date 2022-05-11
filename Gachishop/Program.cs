@@ -10,9 +10,12 @@ class Program
         IAdminService adminService = new AdminService();
         IAdminControllerDataParser adminControllerDataParser = new AdminControllerDataParser(adminService);
         AdminController adminController = new AdminController(adminService, adminControllerDataParser);
-        
-        LoginController loginController = new LoginController();
 
+        ILoginService loginService = new LoginService();
+        LoginController loginController = new LoginController(loginService);
+
+        IBuyerService buyerService = new BuyerService();
+        IBuyerControllerDataParser buyerControllerDataParser = new BuyerControllerDataParser(buyerService);
         BuyerController buyerContoller;
 
         while (true)
@@ -25,7 +28,7 @@ class Program
             }
             else
             {
-                buyerContoller = new BuyerController(loginController.AuthorizedUser);
+                buyerContoller = new BuyerController(loginController.AuthorizedUser, buyerService, buyerControllerDataParser);
                 buyerContoller.Start();
             }
         }
