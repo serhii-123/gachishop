@@ -55,7 +55,7 @@ public class AdminController
     {
         string name = _dataParser.GetProductName();
         string description = _dataParser.GetProductDescription();
-        string category = _dataParser.GetProductCategory();
+        string category = _dataParser.GetProductCategoryNameForProduct();
         int price = _dataParser.GetProductPrice();
         int quantity = _dataParser.GetProductQuantity();
         int discount = _dataParser.GetProductDiscount();

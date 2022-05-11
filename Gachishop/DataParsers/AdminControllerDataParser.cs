@@ -45,7 +45,7 @@ public class AdminControllerDataParser : IAdminControllerDataParser
         }
     }
 
-    public string GetProductCategory()    
+    public string GetProductCategoryNameForProduct()    
     {
         string type;
         string[] productCategories = _service.GetProductCategories();
