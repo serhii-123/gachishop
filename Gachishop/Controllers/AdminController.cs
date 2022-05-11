@@ -2,6 +2,15 @@
 
 public class AdminController
 {
+    private IAdminControllerDataParser _dataParser;
+    private IAdminService _service;
+
+    public AdminController(IAdminService service, IAdminControllerDataParser dataParser)
+    {
+        _dataParser = dataParser;
+        _service = service;
+    }
+    
     public void Start()
     {
         bool done = false;
@@ -32,28 +41,15 @@ public class AdminController
 
     private void AddProduct()
     {
-        string name = AdminServiceDataParser.GetProductName();
-        string description = AdminServiceDataParser.GetProductDescription();
-        string category = AdminServiceDataParser.GetProductCategory();
-        int price = AdminServiceDataParser.GetProductPrice();
-        int quantity = AdminServiceDataParser.GetProductQuantity();
-        int discount = AdminServiceDataParser.GetProductDiscount();
+        string name = _dataParser.GetProductName();
+        string description = _dataParser.GetProductDescription();
+        string category = _dataParser.GetProductCategory();
+        int price = _dataParser.GetProductPrice();
+        int quantity = _dataParser.GetProductQuantity();
+        int discount = _dataParser.GetProductDiscount();
 
-        using (ShopContext ctx = new ShopContext())
-        {
-            int categoryId = ctx.ProductCategories
-                .First(c => c.Name == category)
-                .Id;
-            ProductInventory inventory = new ProductInventory(quantity);
-            ctx.ProductInventories.Add(inventory);
-            ctx.SaveChanges();
-            
-            Product newProduct = new Product(name, description, price, discount, categoryId, inventory.Id);
-            
-            ctx.Products.Add(newProduct);
-            ctx.SaveChanges();
-        }
-        
+        _service.AddProduct(name, description, category, price, quantity, discount);
+
         Console.WriteLine("Товар добавлен. Нажмите любую клавишу");
         Console.ReadKey();
     }

@@ -3,7 +3,7 @@ using System.Xml.Schema;
 
 namespace Gachishop;
 
-public static class BuyerServiceDataParser
+public static class BuyerControllerDataParser
 {
     public static int GetProductId(User user)
     {

@@ -7,9 +7,13 @@ class Program
 {
     static void Main(string[] args)
     {
+        IAdminService adminService = new AdminService();
+        IAdminControllerDataParser adminControllerDataParser = new AdminControllerDataParser(adminService);
+        AdminController adminController = new AdminController(adminService, adminControllerDataParser);
+        
         LoginController loginController = new LoginController();
-        AdminController adminController = new AdminController();
-        BuyerContoller buyerContoller;
+
+        BuyerController buyerContoller;
 
         while (true)
         {
@@ -21,7 +25,7 @@ class Program
             }
             else
             {
-                buyerContoller = new BuyerContoller(loginController.AuthorizedUser);
+                buyerContoller = new BuyerController(loginController.AuthorizedUser);
                 buyerContoller.Start();
             }
         }

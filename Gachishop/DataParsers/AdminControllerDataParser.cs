@@ -1,8 +1,16 @@
-﻿namespace Gachishop;
+﻿using Gachishop.Controllers;
 
-public static class AdminServiceDataParser
+namespace Gachishop;
+
+public class AdminControllerDataParser : IAdminControllerDataParser
 {
-    public static string GetProductName()
+    private IAdminService _service;
+
+    public AdminControllerDataParser(IAdminService service)
+    {
+        _service = service;
+    }
+    public string GetProductName()
     {
         string name;
         Console.WriteLine("Введите имя товара");
@@ -18,7 +26,7 @@ public static class AdminServiceDataParser
             else return name;
         }
     }
-    public static string GetProductDescription()
+    public string GetProductDescription()
     {
         string description;
         Console.WriteLine("Введите описание товара");
@@ -35,15 +43,10 @@ public static class AdminServiceDataParser
         }
     }
 
-    public static string GetProductCategory()    
+    public string GetProductCategory()    
     {
         string type;
-        string[] productCategories;
-        
-        using (ShopContext ctx = new ShopContext())
-        {
-            productCategories = ctx.ProductCategories.Select(c => c.Name).ToArray();
-        }
+        string[] productCategories = _service.GetProductCategories();
 
         Console.WriteLine("Введите категорию товара");
         type = CustomInput.ReadText();
@@ -59,7 +62,7 @@ public static class AdminServiceDataParser
         }
     }
 
-    public static int GetProductPrice()
+    public int GetProductPrice()
     {
         int price;
         Console.WriteLine("Введите цену товара");
@@ -76,7 +79,7 @@ public static class AdminServiceDataParser
         }
     }
     
-    public static int GetProductQuantity()
+    public int GetProductQuantity()
     {
         int quantity;
         Console.WriteLine("Введите кол-во единиц товара");
@@ -93,7 +96,7 @@ public static class AdminServiceDataParser
         }
     }
     
-    public static int GetProductDiscount()
+    public int GetProductDiscount()
     {
         int discount;
         Console.WriteLine("Введите скидку на товар");

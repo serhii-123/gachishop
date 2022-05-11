@@ -1,10 +1,10 @@
 ﻿namespace Gachishop.Controllers;
 
-public class BuyerContoller
+public class BuyerController
 {
     private User _buyer;
 
-    public BuyerContoller(User buyer)
+    public BuyerController(User buyer)
     {
         _buyer = buyer;
     }
@@ -98,8 +98,8 @@ public class BuyerContoller
 
     private void AddProductToCart()
     {
-        int productId = BuyerServiceDataParser.GetProductId(_buyer);
-        int productQuantity = BuyerServiceDataParser.GetProductQuantity(productId);
+        int productId = BuyerControllerDataParser.GetProductId(_buyer);
+        int productQuantity = BuyerControllerDataParser.GetProductQuantity(productId);
 
         using (ShopContext ctx = new ShopContext())
         {
@@ -140,7 +140,7 @@ public class BuyerContoller
 
     private void DeleteProductFromCart()
     {
-        int productId = BuyerServiceDataParser.GetProductIdForDelete(_buyer);
+        int productId = BuyerControllerDataParser.GetProductIdForDelete(_buyer);
 
         using (ShopContext ctx = new ShopContext())
         {
