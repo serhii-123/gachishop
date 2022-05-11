@@ -6,7 +6,8 @@ public class BuyerService : IBuyerService
     {
         using (ShopContext ctx = new ShopContext())
         {
-            return ctx.Products.FirstOrDefault(p => p.Id == id);
+            return ctx.Products
+                .FirstOrDefault(p => p.Id == id);
         }
     }
 
@@ -27,6 +28,16 @@ public class BuyerService : IBuyerService
                 .Where(i => i.CartId == id)
                 .Select(i => i.ProductId)
                 .ToArray();
+        }
+    }
+
+    public int GetProductUnitsQuantityByInventoryId(int id)
+    {
+        using (ShopContext ctx = new ShopContext())
+        {
+            return ctx.ProductInventories
+                .First(i => i.Id == id)
+                .Quantity;
         }
     }
 }

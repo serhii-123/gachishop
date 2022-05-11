@@ -18,56 +18,48 @@ public class BuyerControllerDataParser : IBuyerControllerDataParser
         Console.WriteLine("Введите номер товара");
         id = CustomInput.ReadNumber();
         
-        using (ShopContext ctx = new ShopContext())
+        while (true)
         {
-            while (true)
+            Product product = _service.FindProductById(id);
+            
+            if (product == null)
             {
-                Product product = _service.FindProductById(id);
-                
-                if (product == null)
-                {
-                    Console.WriteLine("Ошибка! Нет товара с таким номером. Введите другой");
-                    id = CustomInput.ReadNumber();
-                    continue;
-                }
-                
-                Cart cart = _service.FindCartByUserId(user.Id);
-                int[] cartItems = _service.GetCartItemIdsByCartId(cart.Id);
-
-                if (cartItems.Contains(id))
-                {
-                    Console.WriteLine("Ошибка! Товар с таким номером уже есть в корзине. Введите другой");
-                    id = CustomInput.ReadNumber();
-                    continue;
-                }
-                //Вот тут надо закончить
-                bool quantityIsNotNull = ctx.ProductInventories.First(i => i.Id == product.InventoryId).Quantity > 0;
-                
-                if (!quantityIsNotNull)
-                {
-                    Console.WriteLine("Ошибка! Данный товар сейчас не доступен. Введите другой номер");
-                    id = CustomInput.ReadNumber();
-                    continue;
-                }
-                
-                break;
+                Console.WriteLine("Ошибка! Нет товара с таким номером. Введите другой");
+                id = CustomInput.ReadNumber();
+                continue;
             }
+            
+            Cart cart = _service.FindCartByUserId(user.Id);
+            int[] cartItems = _service.GetCartItemIdsByCartId(cart.Id);
+
+            if (cartItems.Contains(id))
+            {
+                Console.WriteLine("Ошибка! Товар с таким номером уже есть в корзине. Введите другой");
+                id = CustomInput.ReadNumber();
+                continue;
+            }
+            
+            int quantityOfProductUnits = _service.GetProductUnitsQuantityByInventoryId(product.InventoryId);
+
+            if (quantityOfProductUnits == 0) 
+            {
+                Console.WriteLine("Ошибка! Данный товар сейчас не доступен. Введите другой номер");
+                id = CustomInput.ReadNumber();
+                continue;
+            }
+            
+            break;
         }
-        
+
         return id;
     }
 
     public int GetProductQuantity(int productId)
     {
-        int quantity, currentQuantity;
-        Product product;
-
-        using (ShopContext ctx = new ShopContext())
-        {
-            product = ctx.Products.First(p => p.Id == productId);
-            currentQuantity = ctx.ProductInventories.First(i => i.Id == product.InventoryId).Quantity;
-        }
-
+        int quantity;
+        Product product = _service.FindProductById(productId);
+        int currentQuantity = _service.GetProductUnitsQuantityByInventoryId(product.InventoryId);
+        
         Console.WriteLine("Введите кол-во товаров");
         quantity = CustomInput.ReadNumber();
 
@@ -85,31 +77,22 @@ public class BuyerControllerDataParser : IBuyerControllerDataParser
     public int GetProductIdForDelete(User user)
     {
         int productId;
+        Cart cart = _service.FindCartByUserId(user.Id);
+        int[] productIds = _service.GetCartItemIdsByCartId(cart.Id);
         
         Console.WriteLine("Введите номер товара");
         productId = CustomInput.ReadNumber();
-
-        using (ShopContext ctx = new ShopContext())
+        
+        while (true)
         {
-            Cart cart = ctx.Carts.
-                First(c => c.UserId == user.Id);
-            int[] productIds = ctx.CartItems
-                .Select(i => i)
-                .Where(i => i.CartId == cart.Id)
-                .Select(i => i.ProductId)
-                .ToArray();
-            
-            while (true)
+            if (!productIds.Contains(productId))
             {
-                if (!productIds.Contains(productId))
-                {
-                    Console.WriteLine("Ошибка! В корзине нет товара с таким номером");
-                    productId = CustomInput.ReadNumber();
-                    continue;
-                }
-
-                return productId;
+                Console.WriteLine("Ошибка! В корзине нет товара с таким номером");
+                productId = CustomInput.ReadNumber();
+                continue;
             }
+
+            return productId;
         }
     }
 }
