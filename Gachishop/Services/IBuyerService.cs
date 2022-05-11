@@ -7,4 +7,10 @@ public interface IBuyerService
     int[] GetCartItemIdsByCartId(int id);
 
     int GetProductUnitsQuantityByInventoryId(int id);
+    Product[] GetAllProducts();
+    string GetCategoryNameById(int id);
+    void AddCartItem(CartItem cartItem);
+    CartItem[] GetCartItemsByCartId(int id);
+    CartItem GetCartItemByCartIdAndProductId(int cartId, int productId);
+    void RemoveCartItem(CartItem cartItem);
 }

@@ -15,7 +15,8 @@ public class BuyerService : IBuyerService
     {
         using (ShopContext ctx = new ShopContext())
         {
-            return ctx.Carts.First(c => c.UserId == id);
+            return ctx.Carts
+                .First(c => c.UserId == id);
         }
     }
 
@@ -38,6 +39,64 @@ public class BuyerService : IBuyerService
             return ctx.ProductInventories
                 .First(i => i.Id == id)
                 .Quantity;
+        }
+    }
+
+    public Product[] GetAllProducts()
+    {
+        using (ShopContext ctx = new ShopContext())
+        {
+            return ctx.Products.ToArray();
+        }
+    }
+
+    public string GetCategoryNameById(int id)
+    {
+        using (ShopContext ctx = new ShopContext())
+        {
+            return ctx.ProductCategories
+                .First(c => c.Id == id)
+                .Name;
+        }
+    }
+
+    public void AddCartItem(CartItem cartItem)
+    {
+        using (ShopContext ctx = new ShopContext())
+        {
+            ctx.CartItems.Add(cartItem);
+            ctx.SaveChanges();
+        }
+    }
+
+    public CartItem[] GetCartItemsByCartId(int id)
+    {
+        using (ShopContext ctx = new ShopContext())
+        {
+            return ctx.CartItems
+                .Select(i => i)
+                .Where(i => i.CartId == id)
+                .ToArray();
+        }
+    }
+
+    public CartItem GetCartItemByCartIdAndProductId(int cartId, int productId)
+    {
+        using (ShopContext ctx = new ShopContext())
+        {
+            return ctx.CartItems
+                .Select(i => i)
+                .Where(i => i.CartId == cartId)
+                .First(i => i.ProductId == productId);
+        }
+    }
+
+    public void RemoveCartItem(CartItem cartItem)
+    {
+        using (ShopContext ctx = new ShopContext())
+        {
+            ctx.CartItems.Remove(cartItem);
+            ctx.SaveChanges();
         }
     }
 }

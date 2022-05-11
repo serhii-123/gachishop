@@ -48,10 +48,8 @@ public class BuyerControllerDataParser : IBuyerControllerDataParser
                 continue;
             }
             
-            break;
+            return id;
         }
-
-        return id;
     }
 
     public int GetProductQuantity(int productId)
@@ -69,8 +67,10 @@ public class BuyerControllerDataParser : IBuyerControllerDataParser
             {
                 Console.WriteLine("Ошибка! Недоступно такое количество. Введите другое");
                 quantity = CustomInput.ReadNumber();
+                continue;
             }
-            else return quantity;
+            
+            return quantity;
         }
     }
 

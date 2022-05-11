@@ -76,27 +76,21 @@ public class BuyerController
 
     private void ShowProducts()
     {
-        using (ShopContext ctx = new ShopContext())
+        Product[] products = _service.GetAllProducts();
+        
+        foreach (Product product in products)
         {
-            IEnumerable<Product> list = ctx.Products.ToList();
-
-            foreach (Product product in list)
-            {
-                string productCategory = ctx.ProductCategories
-                    .First(c => c.Id == product.CategoryId)
-                    .Name;
-                int productQuantity = ctx.ProductInventories
-                    .First(i => i.Id == product.InventoryId)
-                    .Quantity;
-                Console.WriteLine(product.Name);
-                Console.WriteLine(product.Description);
-                Console.WriteLine($"Номер товара: {product.Id} " +
-                                  $"| Категория: {productCategory} " +
-                                  $"| Цена: {product.Price}$ " +
-                                  $"| Кол-во: {productQuantity} " +
-                                  $"| Cкидка: {product.Discount}%");
-                Console.WriteLine("----------");
-            }
+            string productCategory = _service.GetCategoryNameById(product.CategoryId);
+            int productQuantity = _service.GetProductUnitsQuantityByInventoryId(product.InventoryId);
+            
+            Console.WriteLine($"{product.Name} \n" +
+                              $"{product.Description} \n" +
+                              $"Номер товара: {product.Id} " +
+                              $"| Категория: {productCategory} " +
+                              $"| Цена: {product.Price}$ " +
+                              $"| Кол-во: {productQuantity} " +
+                              $"| Cкидка: {product.Discount}% \n" +
+                              "----------");
         }
     }
 
@@ -104,60 +98,44 @@ public class BuyerController
     {
         int productId = _dataParser.GetProductId(_buyer);
         int productQuantity = _dataParser.GetProductQuantity(productId);
-
-        using (ShopContext ctx = new ShopContext())
-        {
-            Cart cart = ctx.Carts.First(c => c.UserId == _buyer.Id);
-            CartItem cartItem = new CartItem(cart.Id, productId, productQuantity);
-            
-            ctx.CartItems.Add(cartItem);
-            ctx.SaveChanges();
-        }
+        Cart cart = _service.FindCartByUserId(_buyer.Id);
+        CartItem cartItem = new CartItem(cart.Id, productId, productQuantity);
         
+        _service.AddCartItem(cartItem);
+
         Console.WriteLine("Товар добавлен в корзину");
     }
 
     private void ShowProductsFromCart()
     {
-        using (ShopContext ctx = new ShopContext())
+        Cart cart = _service.FindCartByUserId(_buyer.Id);
+        CartItem[] cartItems = _service.GetCartItemsByCartId(cart.Id);
+        
+        if (cartItems.Length == 0)
         {
-            Cart cart = ctx.Carts.First(c => c.UserId == _buyer.Id);
-            CartItem[] cartItems = ctx.CartItems.Select(i => i).Where(i => i.CartId == cart.Id).ToArray();
-
-            if (cartItems.Length == 0)
-            {
-                Console.WriteLine("Корзина пуста");
-                return;
-            }
-
-            foreach (CartItem cartItem in cartItems)
-            {
-                Product product = ctx.Products.First(p => p.Id == cartItem.ProductId);
-                Console.WriteLine($"Имя: {product.Name} " +
-                                  $"| Номер: {product.Id} " +
-                                  $"| Цена: {product.Price}$ " +
-                                  $"| Кол-во: {cartItem.Quantity}");
-                Console.WriteLine("----------");
-            }
+            Console.WriteLine("Корзина пуста");
+            return;
+        }
+        
+        foreach (CartItem cartItem in cartItems)
+        {
+            Product product = _service.FindProductById(cartItem.ProductId);
+            
+            Console.WriteLine($"Имя: {product.Name} " +
+                              $"| Номер: {product.Id} " +
+                              $"| Цена: {product.Price}$ " +
+                              $"| Кол-во: {cartItem.Quantity} \n" +
+                              $"----------");
         }
     }
 
     private void DeleteProductFromCart()
     {
         int productId = _dataParser.GetProductIdForDelete(_buyer);
-
-        using (ShopContext ctx = new ShopContext())
-        {
-            Cart cart = ctx.Carts.
-                First(c => c.UserId == _buyer.Id);
-            CartItem cartItem = ctx.CartItems
-                .Select(i => i)
-                .Where(i => i.CartId == cart.Id)
-                .First(i => i.ProductId == productId);
-            ctx.CartItems.Remove(cartItem);
-            ctx.SaveChanges();
-        }
-        
+        Cart cart = _service.FindCartByUserId(_buyer.Id);
+        CartItem cartItem = _service.GetCartItemByCartIdAndProductId(cart.Id, productId);
+            
+        _service.RemoveCartItem(cartItem);
         Console.WriteLine("Товар удален из корзины");
     }
 }
