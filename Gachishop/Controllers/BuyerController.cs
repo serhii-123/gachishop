@@ -23,12 +23,13 @@ public class BuyerController
 
         while (!done)
         {
-            Console.WriteLine("Введите номер команды: " +
-                              "\n(1)Показать товары " +
-                              "\n(2)Добавить товар в корзину " +
-                              "\n(3)Показать содержимое корзины " +
-                              "\n(4)Удалить товар из корзины " +
-                              "\n(5)Выйти");
+            Console.WriteLine("Введите номер команды: \n" +
+                              "(1)Показать товары \n" +
+                              "(2)Добавить товар в корзину \n" +
+                              "(3)Показать содержимое корзины \n" +
+                              "(4)Удалить товар из корзины \n" +
+                              "(5)Купить товар(-ы) \n" +
+                              "(6)Выйти \n");
             
             enteredNumber = CustomInput.ReadNumber();
 
@@ -63,6 +64,13 @@ public class BuyerController
                     Console.Clear();
                     break;
                 case(5):
+                    Console.Clear();
+                    BuyProducts();
+                    Console.WriteLine("Нажмите любую кнопку");
+                    Console.ReadKey();
+                    Console.Clear();
+                    break;
+                case(6):
                     done = true;
                     Console.Clear();
                     break;
@@ -98,7 +106,7 @@ public class BuyerController
     {
         int productId = _dataParser.GetProductId(_buyer);
         int productQuantity = _dataParser.GetProductQuantity(productId);
-        Cart cart = _service.FindCartByUserId(_buyer.Id);
+        Cart cart = _service.GetCartByUserId(_buyer.Id);
         CartItem cartItem = new CartItem(cart.Id, productId, productQuantity);
         
         _service.AddCartItem(cartItem);
@@ -108,7 +116,7 @@ public class BuyerController
 
     private void ShowProductsFromCart()
     {
-        Cart cart = _service.FindCartByUserId(_buyer.Id);
+        Cart cart = _service.GetCartByUserId(_buyer.Id);
         CartItem[] cartItems = _service.GetCartItemsByCartId(cart.Id);
         
         if (cartItems.Length == 0)
@@ -119,7 +127,7 @@ public class BuyerController
         
         foreach (CartItem cartItem in cartItems)
         {
-            Product product = _service.FindProductById(cartItem.ProductId);
+            Product product = _service.GetProductById(cartItem.ProductId);
             
             Console.WriteLine($"Имя: {product.Name} " +
                               $"| Номер: {product.Id} " +
@@ -132,10 +140,32 @@ public class BuyerController
     private void DeleteProductFromCart()
     {
         int productId = _dataParser.GetProductIdForDelete(_buyer);
-        Cart cart = _service.FindCartByUserId(_buyer.Id);
+        Cart cart = _service.GetCartByUserId(_buyer.Id);
         CartItem cartItem = _service.GetCartItemByCartIdAndProductId(cart.Id, productId);
             
         _service.RemoveCartItem(cartItem);
         Console.WriteLine("Товар удален из корзины");
+    }
+
+    private void BuyProducts()
+    {
+        Cart cart = _service.GetCartByUserId(_buyer.Id);
+        CartItem[] cartItems = _service.GetCartItemsByCartId(cart.Id);
+
+        if (cartItems.Length == 0)
+        {
+            Console.WriteLine("Корзина пустая, что ты покупать собрался, дубина?");
+        }
+
+        UserPayment userPayment = _service.GetUserPaymentByUserId(_buyer.Id);
+        
+        if (userPayment != null)
+        {
+            return;
+        }
+
+        string cardNumber = _dataParser.GetCardNumber();
+        string validity = _dataParser.GetValidity();
+
     }
 }

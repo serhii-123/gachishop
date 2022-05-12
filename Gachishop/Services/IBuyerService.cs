@@ -2,10 +2,9 @@
 
 public interface IBuyerService
 {
-    Product FindProductById(int id);
-    Cart FindCartByUserId(int id);
+    Product GetProductById(int id);
+    Cart GetCartByUserId(int id);
     int[] GetCartItemIdsByCartId(int id);
-
     int GetProductUnitsQuantityByInventoryId(int id);
     Product[] GetAllProducts();
     string GetCategoryNameById(int id);
@@ -13,4 +12,5 @@ public interface IBuyerService
     CartItem[] GetCartItemsByCartId(int id);
     CartItem GetCartItemByCartIdAndProductId(int cartId, int productId);
     void RemoveCartItem(CartItem cartItem);
+    UserPayment GetUserPaymentByUserId(int id);
 }

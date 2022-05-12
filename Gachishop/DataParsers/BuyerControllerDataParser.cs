@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Text.RegularExpressions;
 using System.Xml.Schema;
 
 namespace Gachishop;
@@ -20,7 +21,7 @@ public class BuyerControllerDataParser : IBuyerControllerDataParser
         
         while (true)
         {
-            Product product = _service.FindProductById(id);
+            Product product = _service.GetProductById(id);
             
             if (product == null)
             {
@@ -29,7 +30,7 @@ public class BuyerControllerDataParser : IBuyerControllerDataParser
                 continue;
             }
             
-            Cart cart = _service.FindCartByUserId(user.Id);
+            Cart cart = _service.GetCartByUserId(user.Id);
             int[] cartItems = _service.GetCartItemIdsByCartId(cart.Id);
 
             if (cartItems.Contains(id))
@@ -55,7 +56,7 @@ public class BuyerControllerDataParser : IBuyerControllerDataParser
     public int GetProductQuantity(int productId)
     {
         int quantity;
-        Product product = _service.FindProductById(productId);
+        Product product = _service.GetProductById(productId);
         int currentQuantity = _service.GetProductUnitsQuantityByInventoryId(product.InventoryId);
         
         Console.WriteLine("Введите кол-во товаров");
@@ -77,7 +78,7 @@ public class BuyerControllerDataParser : IBuyerControllerDataParser
     public int GetProductIdForDelete(User user)
     {
         int productId;
-        Cart cart = _service.FindCartByUserId(user.Id);
+        Cart cart = _service.GetCartByUserId(user.Id);
         int[] productIds = _service.GetCartItemIdsByCartId(cart.Id);
         
         Console.WriteLine("Введите номер товара");
@@ -93,6 +94,37 @@ public class BuyerControllerDataParser : IBuyerControllerDataParser
             }
 
             return productId;
+        }
+    }
+
+    public string GetCardNumber()
+    {
+        string cardNumber;
+        
+        Console.WriteLine("Введите номер карты");
+        cardNumber = CustomInput.ReadCardNumber();
+        
+        return cardNumber;
+    }
+
+    public string GetValidity()
+    {
+        string validity;
+        string regexp = @"^(0[1-9]|1[0-2])\/?([0-9]{2})$";
+        
+        Console.WriteLine("Введите дату, до которой действительна карта");
+        validity = CustomInput.ReadText();
+
+        while (true)
+        {
+            if (!Regex.IsMatch(validity, regexp))
+            {
+                Console.WriteLine("Ошибка! Введенная строка не соответствует формату. Введите другую");
+                validity = CustomInput.ReadText();
+                continue;
+            }
+
+            return validity;
         }
     }
 }

@@ -2,7 +2,7 @@ namespace Gachishop;
 
 public class BuyerService : IBuyerService
 {
-    public Product FindProductById(int id)
+    public Product GetProductById(int id)
     {
         using (ShopContext ctx = new ShopContext())
         {
@@ -11,7 +11,7 @@ public class BuyerService : IBuyerService
         }
     }
 
-    public Cart FindCartByUserId(int id)
+    public Cart GetCartByUserId(int id)
     {
         using (ShopContext ctx = new ShopContext())
         {
@@ -97,6 +97,15 @@ public class BuyerService : IBuyerService
         {
             ctx.CartItems.Remove(cartItem);
             ctx.SaveChanges();
+        }
+    }
+
+    public UserPayment GetUserPaymentByUserId(int id)
+    {
+        using (ShopContext ctx = new ShopContext())
+        {
+            return ctx.UserPayments
+                .FirstOrDefault(p => p.UserId == id);
         }
     }
 }
