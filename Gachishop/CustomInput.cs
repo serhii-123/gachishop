@@ -68,6 +68,7 @@ class CustomInput
     {
         string enteredValue = "";
         string regexp = @"D[0-9]";
+        
         while (true)
         {
             ConsoleKeyInfo key = Console.ReadKey(true);
@@ -95,6 +96,7 @@ class CustomInput
     {
         string enteredValue = "";
         string regexp = @"D[0-9]";
+        
         while (true)
         {
             ConsoleKeyInfo key = Console.ReadKey(true);
@@ -122,11 +124,12 @@ class CustomInput
     {
         string enteredValue = "";
         string regexp = @"D[0-9]";
+        
         while (true)
         {
             ConsoleKeyInfo key = Console.ReadKey(true);
             
-            if (Regex.IsMatch(key.Key.ToString(), regexp) && enteredValue.Length < 2)
+            if (Regex.IsMatch(key.Key.ToString(), regexp) && enteredValue.Length < 3)
             {
                 enteredValue += key.KeyChar;
                 Console.Write(key.KeyChar);
@@ -141,6 +144,36 @@ class CustomInput
             {
                 Console.WriteLine("");
                 return int.Parse(enteredValue);
+            }
+        }
+    }
+
+    public static string ReadPhoneNumber()
+    {
+        string enteredValue = "";
+        string regexp = @"D[0-9]";
+        
+        Console.Write("+380");
+        
+        while (true)
+        {
+            ConsoleKeyInfo key = Console.ReadKey(true);
+            
+            if (Regex.IsMatch(key.Key.ToString(), regexp) && enteredValue.Length < 9)
+            {
+                enteredValue += key.KeyChar;
+                Console.Write(key.KeyChar);
+            }
+            if (key.Key == ConsoleKey.Backspace && enteredValue.Length != 0)
+            {
+                enteredValue = enteredValue.Substring(0, (enteredValue.Length - 1));
+                Console.Write("\b \b");
+                continue;
+            }
+            if (key.Key == ConsoleKey.Enter && enteredValue.Length == 9)
+            {
+                Console.WriteLine("");
+                return "+380" + enteredValue;
             }
         }
     }

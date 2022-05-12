@@ -159,11 +159,25 @@ public class BuyerController
 
         UserPayment userPayment = _service.GetUserPaymentByUserId(_buyer.Id);
         
-        if (userPayment != null)
+        if (userPayment == null)
         {
             string cardNumber = _dataParser.GetCardNumber();
             string validity = _dataParser.GetValidity();
-            int securityCode = _dataParser.GetSecurityCode();    
+            int securityCode = _dataParser.GetSecurityCode();
+
+            userPayment = new UserPayment(_buyer.Id, cardNumber, validity, securityCode);
+            _service.AddUserPayment(userPayment);
+        }
+
+        UserDeliveryData userDeliveryData = _service.GetUserDeliveryDataByUserId(_buyer.Id);
+
+        if (userDeliveryData == null)
+        {
+            string address = _dataParser.GetAddress();
+            string phoneNumber = _dataParser.GetPhoneNumber();
+
+            userDeliveryData = new UserDeliveryData(_buyer.Id, address, phoneNumber);
+            _service.AddUserDeliveryData(userDeliveryData);
         }
         
         

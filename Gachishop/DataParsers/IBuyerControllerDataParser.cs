@@ -8,4 +8,6 @@ public interface IBuyerControllerDataParser
     string GetCardNumber();
     string GetValidity();
     int GetSecurityCode();
+    string GetAddress();
+    string GetPhoneNumber();
 }

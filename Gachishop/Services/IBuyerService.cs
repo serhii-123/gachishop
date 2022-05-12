@@ -13,4 +13,7 @@ public interface IBuyerService
     CartItem GetCartItemByCartIdAndProductId(int cartId, int productId);
     void RemoveCartItem(CartItem cartItem);
     UserPayment GetUserPaymentByUserId(int id);
+    void AddUserPayment(UserPayment userPayment);
+    UserDeliveryData GetUserDeliveryDataByUserId(int id);
+    void AddUserDeliveryData(UserDeliveryData userDeliveryData);
 }

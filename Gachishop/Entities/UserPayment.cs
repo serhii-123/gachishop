@@ -10,4 +10,12 @@ public class UserPayment
     public string Number { get; set; }
     public string Validity { get; set; }
     public int SecurityCode { get; set; }
+
+    public UserPayment(int userId, string number, string validity, int securityCode)
+    {
+        UserId = userId;
+        Number = number;
+        Validity = validity;
+        SecurityCode = securityCode;
+    }
 }

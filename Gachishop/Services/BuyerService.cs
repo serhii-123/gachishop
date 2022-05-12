@@ -108,4 +108,31 @@ public class BuyerService : IBuyerService
                 .FirstOrDefault(p => p.UserId == id);
         }
     }
+
+    public void AddUserPayment(UserPayment userPayment)
+    {
+        using (ShopContext ctx = new ShopContext())
+        {
+            ctx.UserPayments.Add(userPayment);
+            ctx.SaveChanges();
+        }
+    }
+
+    public UserDeliveryData GetUserDeliveryDataByUserId(int id)
+    {
+        using (ShopContext ctx = new ShopContext())
+        {
+            return ctx.UserDeliveryData.
+                FirstOrDefault(d => d.UserId == id);
+        }
+    }
+    
+    public void AddUserDeliveryData(UserDeliveryData userDeliveryData)
+    {
+        using (ShopContext ctx = new ShopContext())
+        {
+            ctx.UserDeliveryData.Add(userDeliveryData);
+            ctx.SaveChanges();
+        }
+    }
 }

@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using System.Text.RegularExpressions;
-using System.Xml.Schema;
+﻿using System.Text.RegularExpressions;
 
 namespace Gachishop;
 
@@ -136,5 +134,35 @@ public class BuyerControllerDataParser : IBuyerControllerDataParser
         securityCode = CustomInput.ReadSecurityCode();
 
         return securityCode;
+    }
+
+    public string GetAddress()
+    {
+        string address;
+        
+        Console.WriteLine("Введите адрес доставки");
+        address = CustomInput.ReadText();
+
+        while (true)
+        {
+            if (address.Length < 15)
+            {
+                Console.WriteLine("Ошибка! Была введена слишком короткая строка. Попробуйте еще раз");
+                address = CustomInput.ReadText();
+                continue;
+            }
+
+            return address;
+        }
+    }
+
+    public string GetPhoneNumber()
+    {
+        string phoneNumber;
+        
+        Console.WriteLine("Введите номер телефона");
+        phoneNumber = CustomInput.ReadPhoneNumber();
+
+        return phoneNumber;
     }
 }
