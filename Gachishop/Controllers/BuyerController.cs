@@ -90,15 +90,18 @@ public class BuyerController
         {
             string productCategory = _service.GetCategoryNameById(product.CategoryId);
             int productQuantity = _service.GetProductUnitsQuantityByInventoryId(product.InventoryId);
-            
-            Console.WriteLine($"{product.Name} \n" +
-                              $"{product.Description} \n" +
-                              $"Номер товара: {product.Id} " +
-                              $"| Категория: {productCategory} " +
-                              $"| Цена: {product.Price}$ " +
-                              $"| Кол-во: {productQuantity} " +
-                              $"| Cкидка: {product.Discount}% \n" +
-                              "----------");
+
+            if (productQuantity != 0)
+            {
+                Console.WriteLine($"{product.Name} \n" +
+                                  $"{product.Description} \n" +
+                                  $"Номер товара: {product.Id} " +
+                                  $"| Категория: {productCategory} " +
+                                  $"| Цена: {product.Price}$ " +
+                                  $"| Кол-во: {productQuantity} " +
+                                  $"| Cкидка: {product.Discount}% \n" +
+                                  "----------");    
+            }
         }
     }
 
