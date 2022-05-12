@@ -151,13 +151,14 @@ public class BuyerController
     {
         Cart cart = _service.GetCartByUserId(_buyer.Id);
         CartItem[] cartItems = _service.GetCartItemsByCartId(cart.Id);
-
+        UserPayment userPayment = _service.GetUserPaymentByUserId(_buyer.Id);
+        UserDeliveryData userDeliveryData = _service.GetUserDeliveryDataByUserId(_buyer.Id);
+        
         if (cartItems.Length == 0)
         {
             Console.WriteLine("Корзина пустая, что ты покупать собрался, дубина?");
+            return;
         }
-
-        UserPayment userPayment = _service.GetUserPaymentByUserId(_buyer.Id);
         
         if (userPayment == null)
         {
@@ -168,9 +169,7 @@ public class BuyerController
             userPayment = new UserPayment(_buyer.Id, cardNumber, validity, securityCode);
             _service.AddUserPayment(userPayment);
         }
-
-        UserDeliveryData userDeliveryData = _service.GetUserDeliveryDataByUserId(_buyer.Id);
-
+        
         if (userDeliveryData == null)
         {
             string address = _dataParser.GetAddress();
@@ -179,7 +178,9 @@ public class BuyerController
             userDeliveryData = new UserDeliveryData(_buyer.Id, address, phoneNumber);
             _service.AddUserDeliveryData(userDeliveryData);
         }
+
+        int totalSum = _service.GetPriceOfAllCartProductsByCartId(cart.Id);
         
-        
+        Console.WriteLine("Итоговая цена: " + totalSum);
     }
 }

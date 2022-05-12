@@ -135,4 +135,22 @@ public class BuyerService : IBuyerService
             ctx.SaveChanges();
         }
     }
+
+    public int GetPriceOfAllCartProductsByCartId(int id)
+    {
+        using (ShopContext ctx = new ShopContext())
+        {
+            CartItem[] cartItems = GetCartItemsByCartId(id);
+            int totalSum = 0;
+
+            foreach (var cartItem in cartItems)
+            {
+                Product product = ctx.Products.First(p => p.Id == cartItem.ProductId);
+
+                totalSum += product.Price * cartItem.Quantity;
+            }
+
+            return totalSum;
+        }
+    }
 }
