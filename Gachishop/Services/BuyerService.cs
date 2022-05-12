@@ -162,4 +162,29 @@ public class BuyerService : IBuyerService
             ctx.SaveChanges();
         }
     }
+
+    public void AddOrderItem(OrderItem orderItem)
+    {
+        using (ShopContext ctx = new ShopContext())
+        {
+            ctx.OrderItems.Add(orderItem);
+            ctx.SaveChanges();
+        }
+    }
+
+    public ProductInventory GetProductInventoryById(int id)
+    {
+        using (ShopContext ctx = new ShopContext())
+        {
+            return ctx.ProductInventories.First(i => i.Id == id);
+        }
+    }
+
+    public void ReduceProductQuantityInInventory(ProductInventory productInventory, int quantity)
+    {
+        using (ShopContext ctx = new ShopContext())
+        {
+            
+        }
+    }
 }

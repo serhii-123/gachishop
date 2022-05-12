@@ -18,4 +18,7 @@ public interface IBuyerService
     void AddUserDeliveryData(UserDeliveryData userDeliveryData);
     int GetPriceOfAllCartProductsByCartId(int id);
     void AddOrder(Order order);
+    void AddOrderItem(OrderItem orderItem);
+    ProductInventory GetProductInventoryById(int id);
+    void ReduceProductQuantityInInventory(ProductInventory productInventory, int quantity);
 }

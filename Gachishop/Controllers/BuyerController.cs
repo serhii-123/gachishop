@@ -181,10 +181,19 @@ public class BuyerController
 
         int totalSum = _service.GetPriceOfAllCartProductsByCartId(cart.Id);
         Order order = new Order(_buyer.Id, totalSum);
-        
         _service.AddOrder(order);
         
-        
-        Console.WriteLine("Итоговая цена: " + totalSum);
+        foreach (CartItem cartItem in cartItems)
+        {
+            OrderItem orderItem = new OrderItem(order.Id, cartItem.ProductId, cartItem.Quantity);
+            Product product = _service.GetProductById(cartItem.ProductId);
+            ProductInventory productInventory = _service.GetProductInventoryById(product.InventoryId);
+            _service.ReduceProductQuantityInInventory(productInventory, cartItem.Quantity);
+            
+            _service.AddOrderItem(orderItem);
+            _service.RemoveCartItem(cartItem);
+        }
+
+        Console.WriteLine("Ваш заказ принят. Итоговая цена: " + totalSum);
     }
 }

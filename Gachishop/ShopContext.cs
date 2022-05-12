@@ -14,6 +14,7 @@ public class ShopContext : DbContext
     public DbSet<UserPayment> UserPayments { get; set; }
     public DbSet<UserDeliveryData> UserDeliveryData { get; set; }
     public DbSet<Order> Orders { get; set; }
+    public DbSet<OrderItem> OrderItems { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -25,7 +26,8 @@ public class ShopContext : DbContext
         modelBuilder.Entity<CartItem>().HasKey(i => i.Id);
         modelBuilder.Entity<UserPayment>().HasKey(p => p.Id);
         modelBuilder.Entity<UserDeliveryData>().HasKey(d => d.Id);
-        modelBuilder.Entity<UserDeliveryData>().HasKey(o => o.Id);
+        modelBuilder.Entity<Order>().HasKey(o => o.Id);
+        modelBuilder.Entity<OrderItem>().HasKey(i => i.Id);
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
