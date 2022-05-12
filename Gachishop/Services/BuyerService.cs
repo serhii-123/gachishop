@@ -153,4 +153,13 @@ public class BuyerService : IBuyerService
             return totalSum;
         }
     }
+
+    public void AddOrder(Order order)
+    {
+        using (ShopContext ctx = new ShopContext())
+        {
+            ctx.Orders.Add(order);
+            ctx.SaveChanges();
+        }
+    }
 }

@@ -180,6 +180,10 @@ public class BuyerController
         }
 
         int totalSum = _service.GetPriceOfAllCartProductsByCartId(cart.Id);
+        Order order = new Order(_buyer.Id, totalSum);
+        
+        _service.AddOrder(order);
+        
         
         Console.WriteLine("Итоговая цена: " + totalSum);
     }
