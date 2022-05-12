@@ -11,7 +11,7 @@ public interface IBuyerService
     void AddCartItem(CartItem cartItem);
     CartItem[] GetCartItemsByCartId(int id);
     CartItem GetCartItemByCartIdAndProductId(int cartId, int productId);
-    void RemoveCartItem(CartItem cartItem);
+    void RemoveCartItemById(int id);
     UserPayment GetUserPaymentByUserId(int id);
     void AddUserPayment(UserPayment userPayment);
     UserDeliveryData GetUserDeliveryDataByUserId(int id);
@@ -20,5 +20,5 @@ public interface IBuyerService
     void AddOrder(Order order);
     void AddOrderItem(OrderItem orderItem);
     ProductInventory GetProductInventoryById(int id);
-    void ReduceProductQuantityInInventory(ProductInventory productInventory, int quantity);
+    void ReduceProductQuantityInInventory(int id, int quantity);
 }

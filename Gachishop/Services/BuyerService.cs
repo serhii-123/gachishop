@@ -91,10 +91,13 @@ public class BuyerService : IBuyerService
         }
     }
 
-    public void RemoveCartItem(CartItem cartItem)
+    public void RemoveCartItemById(int id)
     {
         using (ShopContext ctx = new ShopContext())
         {
+            CartItem cartItem = ctx.CartItems
+                .First(i => i.Id == id);
+            
             ctx.CartItems.Remove(cartItem);
             ctx.SaveChanges();
         }
@@ -180,11 +183,15 @@ public class BuyerService : IBuyerService
         }
     }
 
-    public void ReduceProductQuantityInInventory(ProductInventory productInventory, int quantity)
+    public void ReduceProductQuantityInInventory(int id, int quantity)
     {
         using (ShopContext ctx = new ShopContext())
         {
+            ProductInventory productInventory = ctx.ProductInventories
+                .First(i => i.Id == id);
             
+            productInventory.Quantity -= quantity;
+            ctx.SaveChanges();
         }
     }
 }

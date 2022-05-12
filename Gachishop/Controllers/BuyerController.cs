@@ -143,7 +143,7 @@ public class BuyerController
         Cart cart = _service.GetCartByUserId(_buyer.Id);
         CartItem cartItem = _service.GetCartItemByCartIdAndProductId(cart.Id, productId);
             
-        _service.RemoveCartItem(cartItem);
+        _service.RemoveCartItemById(cartItem.Id);
         Console.WriteLine("Товар удален из корзины");
     }
 
@@ -156,7 +156,7 @@ public class BuyerController
         
         if (cartItems.Length == 0)
         {
-            Console.WriteLine("Корзина пустая, что ты покупать собрался, дубина?");
+            Console.WriteLine("Корзина пустая");
             return;
         }
         
@@ -188,10 +188,10 @@ public class BuyerController
             OrderItem orderItem = new OrderItem(order.Id, cartItem.ProductId, cartItem.Quantity);
             Product product = _service.GetProductById(cartItem.ProductId);
             ProductInventory productInventory = _service.GetProductInventoryById(product.InventoryId);
-            _service.ReduceProductQuantityInInventory(productInventory, cartItem.Quantity);
-            
+
             _service.AddOrderItem(orderItem);
-            _service.RemoveCartItem(cartItem);
+            _service.RemoveCartItemById(cartItem.Id);
+            _service.ReduceProductQuantityInInventory(productInventory.Id, cartItem.Quantity);
         }
 
         Console.WriteLine("Ваш заказ принят. Итоговая цена: " + totalSum);
