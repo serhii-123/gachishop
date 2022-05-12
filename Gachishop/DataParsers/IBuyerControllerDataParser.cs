@@ -7,4 +7,5 @@ public interface IBuyerControllerDataParser
     int GetProductIdForDelete(User user);
     string GetCardNumber();
     string GetValidity();
+    int GetSecurityCode();
 }

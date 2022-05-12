@@ -117,4 +117,31 @@ class CustomInput
             }
         }
     }
+
+    public static int ReadSecurityCode()
+    {
+        string enteredValue = "";
+        string regexp = @"D[0-9]";
+        while (true)
+        {
+            ConsoleKeyInfo key = Console.ReadKey(true);
+            
+            if (Regex.IsMatch(key.Key.ToString(), regexp) && enteredValue.Length < 2)
+            {
+                enteredValue += key.KeyChar;
+                Console.Write(key.KeyChar);
+            }
+            if (key.Key == ConsoleKey.Backspace && enteredValue.Length != 0)
+            {
+                enteredValue = enteredValue.Substring(0, (enteredValue.Length - 1));
+                Console.Write("\b \b");
+                continue;
+            }
+            if (key.Key == ConsoleKey.Enter && enteredValue.Length == 3)
+            {
+                Console.WriteLine("");
+                return int.Parse(enteredValue);
+            }
+        }
+    }
 }

@@ -161,11 +161,11 @@ public class BuyerController
         
         if (userPayment != null)
         {
-            return;
+            string cardNumber = _dataParser.GetCardNumber();
+            string validity = _dataParser.GetValidity();
+            int securityCode = _dataParser.GetSecurityCode();    
         }
-
-        string cardNumber = _dataParser.GetCardNumber();
-        string validity = _dataParser.GetValidity();
-
+        
+        
     }
 }

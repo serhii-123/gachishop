@@ -127,4 +127,14 @@ public class BuyerControllerDataParser : IBuyerControllerDataParser
             return validity;
         }
     }
+
+    public int GetSecurityCode()
+    {
+        int securityCode;
+        
+        Console.WriteLine("Введите защитный код");
+        securityCode = CustomInput.ReadSecurityCode();
+
+        return securityCode;
+    }
 }
