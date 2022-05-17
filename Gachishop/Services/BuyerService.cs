@@ -174,6 +174,7 @@ public class BuyerService : IBuyerService
         Order order = new Order(userId, totalPrice);
         
         _ctx.Orders.Add(order);
+        _ctx.SaveChanges();
         
         foreach (CartItem cartItem in cartItems)
         {

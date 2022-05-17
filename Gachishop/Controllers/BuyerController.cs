@@ -142,8 +142,16 @@ public class BuyerController
 
     private void DeleteProductFromCart()
     {
-        int productId = _dataParser.GetProductIdForDelete(_buyer);
         Cart cart = _service.GetCartByUserId(_buyer.Id);
+        CartItem[] cartItems = _service.GetCartItemsByCartId(cart.Id);
+
+        if (cartItems.Length == 0)
+        {
+            Console.WriteLine("Корзина пустая, удалять нечего");
+            return;
+        }
+                
+        int productId = _dataParser.GetProductIdForDelete(_buyer);
         CartItem cartItem = _service.GetCartItemByCartIdAndProductId(cart.Id, productId);
             
         _service.RemoveCartItemById(cartItem.Id);

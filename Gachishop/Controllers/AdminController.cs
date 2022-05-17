@@ -4,11 +4,13 @@ public class AdminController
 {
     private IAdminControllerDataParser _dataParser;
     private IAdminService _service;
+    private PostalController _postalController;
 
-    public AdminController(IAdminService service, IAdminControllerDataParser dataParser)
+    public AdminController(IAdminService service, IAdminControllerDataParser dataParser, PostalController postalController)
     {
         _dataParser = dataParser;
         _service = service;
+        _postalController = postalController;
     }
     
     public void Start()
@@ -20,7 +22,8 @@ public class AdminController
             Console.WriteLine("Введите номер команды: \n" +
                               "(1)Добавить товар \n" +
                               "(2)Добавить категорию \n" +
-                              "(3)Выйти");
+                              "(3)Обработать заказы \n" +
+                              "(4)Выйти");
             enteredNumber = CustomInput.ReadNumber();
 
             switch (enteredNumber)
@@ -40,6 +43,13 @@ public class AdminController
                     Console.Clear();
                     break;
                 case(3):
+                    Console.Clear();
+                    ProcessOrders();
+                    Console.WriteLine("Нажмите любую клавишу");
+                    Console.ReadKey();
+                    Console.Clear();
+                    break;
+                case(4):
                     done = true;
                     break;
                 default:
@@ -49,6 +59,26 @@ public class AdminController
         }
         Console.Clear();
         
+    }
+
+    public void ProcessOrders()
+    {
+        Order[] orders = _service.GetAllOrders();
+
+        if (orders.Length == 0)
+        {
+            Console.WriteLine("Заказы отсутствуют");
+            return;
+        }
+        
+        foreach (Order order in orders)
+        {
+            OrderItem[] orderItems = _service.GetOrderItemsByOrderId(order.Id);
+            Product[] products;
+            UserDeliveryData address = _service.GetUserDeliveryDataByUserId(order.UserId);
+            
+            //_postalController.SendPackage(order, );
+        }
     }
 
     private void AddProduct()

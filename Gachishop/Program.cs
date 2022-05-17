@@ -7,10 +7,14 @@ class Program
 {
     static void Main(string[] args)
     {
+        
         ShopContext ctx = new ShopContext();
+        
+        PostalController postalController = new PostalController();
+        
         IAdminService adminService = new AdminService(ctx);
         IAdminControllerDataParser adminControllerDataParser = new AdminControllerDataParser(adminService);
-        AdminController adminController = new AdminController(adminService, adminControllerDataParser);
+        AdminController adminController = new AdminController(adminService, adminControllerDataParser, postalController);
 
         ILoginService loginService = new LoginService();
         LoginController loginController = new LoginController(loginService);

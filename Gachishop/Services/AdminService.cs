@@ -34,7 +34,35 @@ public class AdminService : IAdminService
     public void AddProductCategory(string name)
     {
         ProductCategory productCategory = new ProductCategory(name);
-        _ctx.ProductCategories.Add(productCategory);
+        
+        _ctx.ProductCategories
+            .Add(productCategory);
         _ctx.SaveChanges();
+    }
+
+    public Order[] GetAllOrders()
+    {
+        return _ctx.Orders
+            .Select(o => o)
+            .ToArray();
+    }
+
+    public User GetUserById(int id)
+    {
+        return _ctx.Users.First(u => u.Id == id);
+    }
+
+    public OrderItem[] GetOrderItemsByOrderId(int id)
+    {
+        return _ctx.OrderItems
+            .Select(i => i)
+            .Where(i => i.OrderId == id)
+            .ToArray();
+    }
+
+    public UserDeliveryData GetUserDeliveryDataByUserId(int id)
+    {
+        return _ctx.UserDeliveryData
+            .First(d => d.UserId == id);
     }
 }

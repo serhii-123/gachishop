@@ -171,7 +171,7 @@ public class BuyerControllerDataParser : IBuyerControllerDataParser
         string answer;
 
         Console.WriteLine("Желаете ввести промокод? \n" +
-                          "(Введите \"yes\" или \"no\"");
+                          "(Введите \"yes\" или \"no\")");
         answer = CustomInput.ReadYesOrNo();
 
         if (answer == "no")
