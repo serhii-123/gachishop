@@ -68,9 +68,8 @@ public class AdminController
     private void AddCategory()
     {
         string categoryName = _dataParser.GetProductCategoryName();
-        ProductCategory productCategory = new ProductCategory(categoryName);
-        
-        _service.AddProductCategory(productCategory);
+
+        _service.AddProductCategory(categoryName);
         Console.WriteLine("Категория добавлена");
     }
 }

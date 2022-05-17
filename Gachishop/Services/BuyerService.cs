@@ -2,196 +2,153 @@ namespace Gachishop;
 
 public class BuyerService : IBuyerService
 {
+    private ShopContext _ctx;
+
+    public BuyerService(ShopContext ctx)
+    {
+        _ctx = ctx;
+    }
     public Product GetProductById(int id)
     {
-        using (ShopContext ctx = new ShopContext())
-        {
-            return ctx.Products
-                .FirstOrDefault(p => p.Id == id);
-        }
+        return _ctx.Products
+            .FirstOrDefault(p => p.Id == id);
     }
 
     public Cart GetCartByUserId(int id)
     {
-        using (ShopContext ctx = new ShopContext())
-        {
-            return ctx.Carts
-                .First(c => c.UserId == id);
-        }
+        return _ctx.Carts
+            .First(c => c.UserId == id);
     }
 
     public int[] GetCartItemIdsByCartId(int id)
     {
-        using (ShopContext ctx = new ShopContext())
-        {
-            return ctx.CartItems
-                .Select(i => i)
-                .Where(i => i.CartId == id)
-                .Select(i => i.ProductId)
-                .ToArray();
-        }
+        return _ctx.CartItems
+            .Select(i => i)
+            .Where(i => i.CartId == id)
+            .Select(i => i.ProductId)
+            .ToArray();
     }
 
     public int GetProductUnitsQuantityByInventoryId(int id)
     {
-        using (ShopContext ctx = new ShopContext())
-        {
-            return ctx.ProductInventories
-                .First(i => i.Id == id)
-                .Quantity;
-        }
+        return _ctx.ProductInventories
+            .First(i => i.Id == id)
+            .Quantity;
     }
 
     public Product[] GetAllProducts()
     {
-        using (ShopContext ctx = new ShopContext())
-        {
-            return ctx.Products.ToArray();
-        }
+        return _ctx.Products.ToArray();
     }
 
     public string GetCategoryNameById(int id)
     {
-        using (ShopContext ctx = new ShopContext())
-        {
-            return ctx.ProductCategories
+        return _ctx.ProductCategories
                 .First(c => c.Id == id)
                 .Name;
-        }
     }
 
-    public void AddCartItem(CartItem cartItem)
+    public void AddCartItem(int cartId, int productId, int productQuantity)
     {
-        using (ShopContext ctx = new ShopContext())
-        {
-            ctx.CartItems.Add(cartItem);
-            ctx.SaveChanges();
-        }
+        CartItem cartItem = new CartItem(cartId, productId, productQuantity);
+        
+        _ctx.CartItems.Add(cartItem); 
+        _ctx.SaveChanges();
     }
 
     public CartItem[] GetCartItemsByCartId(int id)
     {
-        using (ShopContext ctx = new ShopContext())
-        {
-            return ctx.CartItems
-                .Select(i => i)
-                .Where(i => i.CartId == id)
-                .ToArray();
-        }
+        return _ctx.CartItems
+            .Select(i => i)
+            .Where(i => i.CartId == id)
+            .ToArray();
     }
 
     public CartItem GetCartItemByCartIdAndProductId(int cartId, int productId)
     {
-        using (ShopContext ctx = new ShopContext())
-        {
-            return ctx.CartItems
-                .Select(i => i)
-                .Where(i => i.CartId == cartId)
-                .First(i => i.ProductId == productId);
-        }
+        return _ctx.CartItems
+            .Select(i => i)
+            .Where(i => i.CartId == cartId)
+            .First(i => i.ProductId == productId);
     }
 
     public void RemoveCartItemById(int id)
     {
-        using (ShopContext ctx = new ShopContext())
-        {
-            CartItem cartItem = ctx.CartItems
-                .First(i => i.Id == id);
+        CartItem cartItem = _ctx.CartItems
+            .First(i => i.Id == id);
             
-            ctx.CartItems.Remove(cartItem);
-            ctx.SaveChanges();
-        }
+        _ctx.CartItems.Remove(cartItem);
+        _ctx.SaveChanges();
     }
 
     public UserPayment GetUserPaymentByUserId(int id)
     {
-        using (ShopContext ctx = new ShopContext())
-        {
-            return ctx.UserPayments
-                .FirstOrDefault(p => p.UserId == id);
-        }
+        return _ctx.UserPayments
+            .FirstOrDefault(p => p.UserId == id);
     }
 
-    public void AddUserPayment(UserPayment userPayment)
+    public void AddUserPayment(int userId, string cardNumber, string validity, int securityCode)
     {
-        using (ShopContext ctx = new ShopContext())
-        {
-            ctx.UserPayments.Add(userPayment);
-            ctx.SaveChanges();
-        }
+        UserPayment userPayment = new UserPayment(userId, cardNumber, validity, securityCode);
+        
+        _ctx.UserPayments.Add(userPayment);
+        _ctx.SaveChanges();
     }
 
     public UserDeliveryData GetUserDeliveryDataByUserId(int id)
     {
-        using (ShopContext ctx = new ShopContext())
-        {
-            return ctx.UserDeliveryData.
-                FirstOrDefault(d => d.UserId == id);
-        }
+        return _ctx.UserDeliveryData.
+            FirstOrDefault(d => d.UserId == id);
     }
     
-    public void AddUserDeliveryData(UserDeliveryData userDeliveryData)
+    public void AddUserDeliveryData(int userId, string address, string phoneNumber)
     {
-        using (ShopContext ctx = new ShopContext())
-        {
-            ctx.UserDeliveryData.Add(userDeliveryData);
-            ctx.SaveChanges();
-        }
+        UserDeliveryData userDeliveryData = new UserDeliveryData(userId, address, phoneNumber);
+        
+        _ctx.UserDeliveryData.Add(userDeliveryData);
+        _ctx.SaveChanges();
     }
 
     public int GetPriceOfAllCartProductsByCartId(int id)
     {
-        using (ShopContext ctx = new ShopContext())
+        CartItem[] cartItems = GetCartItemsByCartId(id);
+        int totalSum = 0;
+
+        foreach (var cartItem in cartItems)
         {
-            CartItem[] cartItems = GetCartItemsByCartId(id);
-            int totalSum = 0;
+            Product product = _ctx.Products.First(p => p.Id == cartItem.ProductId);
 
-            foreach (var cartItem in cartItems)
-            {
-                Product product = ctx.Products.First(p => p.Id == cartItem.ProductId);
-
-                totalSum += product.Price * cartItem.Quantity;
-            }
-
-            return totalSum;
+            totalSum += product.Price * cartItem.Quantity;
         }
+
+        return totalSum;
     }
 
-    public void AddOrder(Order order)
+    public void AddOrder(int userId, int totalSum)
     {
-        using (ShopContext ctx = new ShopContext())
-        {
-            ctx.Orders.Add(order);
-            ctx.SaveChanges();
-        }
+        Order order = new Order(userId, totalSum);
+        
+        _ctx.Orders.Add(order);
+        _ctx.SaveChanges();
     }
 
     public void AddOrderItem(OrderItem orderItem)
     {
-        using (ShopContext ctx = new ShopContext())
-        {
-            ctx.OrderItems.Add(orderItem);
-            ctx.SaveChanges();
-        }
+        _ctx.OrderItems.Add(orderItem);
+        _ctx.SaveChanges();
     }
 
     public ProductInventory GetProductInventoryById(int id)
     {
-        using (ShopContext ctx = new ShopContext())
-        {
-            return ctx.ProductInventories.First(i => i.Id == id);
-        }
+        return _ctx.ProductInventories.First(i => i.Id == id);
     }
 
     public void ReduceProductQuantityInInventory(int id, int quantity)
     {
-        using (ShopContext ctx = new ShopContext())
-        {
-            ProductInventory productInventory = ctx.ProductInventories
-                .First(i => i.Id == id);
+        ProductInventory productInventory = _ctx.ProductInventories
+            .First(i => i.Id == id);
             
-            productInventory.Quantity -= quantity;
-            ctx.SaveChanges();
-        }
+        productInventory.Quantity -= quantity;
+        _ctx.SaveChanges();
     }
 }

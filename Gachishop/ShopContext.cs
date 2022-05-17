@@ -15,6 +15,7 @@ public class ShopContext : DbContext
     public DbSet<UserDeliveryData> UserDeliveryData { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderItem> OrderItems { get; set; }
+    public DbSet<PromoCode> PromoCodes { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -28,6 +29,7 @@ public class ShopContext : DbContext
         modelBuilder.Entity<UserDeliveryData>().HasKey(d => d.Id);
         modelBuilder.Entity<Order>().HasKey(o => o.Id);
         modelBuilder.Entity<OrderItem>().HasKey(i => i.Id);
+        modelBuilder.Entity<PromoCode>().HasKey(c => c.Id);
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

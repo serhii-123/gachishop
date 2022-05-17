@@ -7,14 +7,15 @@ class Program
 {
     static void Main(string[] args)
     {
-        IAdminService adminService = new AdminService();
+        ShopContext ctx = new ShopContext();
+        IAdminService adminService = new AdminService(ctx);
         IAdminControllerDataParser adminControllerDataParser = new AdminControllerDataParser(adminService);
         AdminController adminController = new AdminController(adminService, adminControllerDataParser);
 
         ILoginService loginService = new LoginService();
         LoginController loginController = new LoginController(loginService);
 
-        IBuyerService buyerService = new BuyerService();
+        IBuyerService buyerService = new BuyerService(ctx);
         IBuyerControllerDataParser buyerControllerDataParser = new BuyerControllerDataParser(buyerService);
         BuyerController buyerContoller;
 

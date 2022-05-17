@@ -112,7 +112,7 @@ public class BuyerController
         Cart cart = _service.GetCartByUserId(_buyer.Id);
         CartItem cartItem = new CartItem(cart.Id, productId, productQuantity);
         
-        _service.AddCartItem(cartItem);
+        _service.AddCartItem(cart.Id, productId, productQuantity);
 
         Console.WriteLine("Товар добавлен в корзину");
     }
@@ -136,7 +136,7 @@ public class BuyerController
                               $"| Номер: {product.Id} " +
                               $"| Цена: {product.Price}$ " +
                               $"| Кол-во: {cartItem.Quantity} \n" +
-                              $"----------");
+                              "----------");
         }
     }
 
@@ -164,27 +164,15 @@ public class BuyerController
         }
         
         if (userPayment == null)
-        {
-            string cardNumber = _dataParser.GetCardNumber();
-            string validity = _dataParser.GetValidity();
-            int securityCode = _dataParser.GetSecurityCode();
-
-            userPayment = new UserPayment(_buyer.Id, cardNumber, validity, securityCode);
-            _service.AddUserPayment(userPayment);
-        }
-        
+            CreateUserPayment();
+       
         if (userDeliveryData == null)
-        {
-            string address = _dataParser.GetAddress();
-            string phoneNumber = _dataParser.GetPhoneNumber();
-
-            userDeliveryData = new UserDeliveryData(_buyer.Id, address, phoneNumber);
-            _service.AddUserDeliveryData(userDeliveryData);
-        }
+            CreateDeliveryData();
 
         int totalSum = _service.GetPriceOfAllCartProductsByCartId(cart.Id);
         Order order = new Order(_buyer.Id, totalSum);
-        _service.AddOrder(order);
+        
+        _service.AddOrder(_buyer.Id, totalSum);
         
         foreach (CartItem cartItem in cartItems)
         {
@@ -198,5 +186,22 @@ public class BuyerController
         }
 
         Console.WriteLine("Ваш заказ принят. Итоговая цена: " + totalSum);
+    }
+
+    public void CreateUserPayment()
+    {
+        string cardNumber = _dataParser.GetCardNumber();
+        string validity = _dataParser.GetValidity();
+        int securityCode = _dataParser.GetSecurityCode();
+        
+        _service.AddUserPayment(_buyer.Id, cardNumber, validity, securityCode);
+    }
+
+    public void CreateDeliveryData()
+    {
+        string address = _dataParser.GetAddress();
+        string phoneNumber = _dataParser.GetPhoneNumber();
+        
+        _service.AddUserDeliveryData(_buyer.Id, address, phoneNumber);
     }
 }
