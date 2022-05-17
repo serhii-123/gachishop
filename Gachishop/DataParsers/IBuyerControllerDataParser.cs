@@ -10,4 +10,5 @@ public interface IBuyerControllerDataParser
     int GetSecurityCode();
     string GetAddress();
     string GetPhoneNumber();
+    string GetPromoCode();
 }

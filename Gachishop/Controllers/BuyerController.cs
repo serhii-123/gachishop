@@ -162,30 +162,18 @@ public class BuyerController
             Console.WriteLine("Корзина пустая");
             return;
         }
+
+        string promoCode = _dataParser.GetPromoCode();
         
         if (userPayment == null)
             CreateUserPayment();
        
         if (userDeliveryData == null)
             CreateDeliveryData();
-
-        int totalSum = _service.GetPriceOfAllCartProductsByCartId(cart.Id);
-        Order order = new Order(_buyer.Id, totalSum);
         
-        _service.AddOrder(_buyer.Id, totalSum);
-        
-        foreach (CartItem cartItem in cartItems)
-        {
-            OrderItem orderItem = new OrderItem(order.Id, cartItem.ProductId, cartItem.Quantity);
-            Product product = _service.GetProductById(cartItem.ProductId);
-            ProductInventory productInventory = _service.GetProductInventoryById(product.InventoryId);
+        _service.CreateOrder(_buyer.Id, promoCode);
 
-            _service.AddOrderItem(orderItem);
-            _service.RemoveCartItemById(cartItem.Id);
-            _service.ReduceProductQuantityInInventory(productInventory.Id, cartItem.Quantity);
-        }
-
-        Console.WriteLine("Ваш заказ принят. Итоговая цена: " + totalSum);
+        Console.WriteLine("Ваш заказ принят");
     }
 
     public void CreateUserPayment()

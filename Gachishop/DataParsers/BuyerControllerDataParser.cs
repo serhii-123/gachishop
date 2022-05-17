@@ -165,4 +165,32 @@ public class BuyerControllerDataParser : IBuyerControllerDataParser
 
         return phoneNumber;
     }
+
+    public string GetPromoCode()
+    {
+        string answer;
+
+        Console.WriteLine("Желаете ввести промокод? \n" +
+                          "(Введите \"yes\" или \"no\"");
+        answer = CustomInput.ReadYesOrNo();
+
+        if (answer == "no")
+            return "";
+        
+        string promoCode;
+        Console.WriteLine("Введите промокод");
+        promoCode = CustomInput.ReadText();
+
+        while (true)
+        {
+            if (_service.GetPromoCodeByCode(promoCode) == null)
+            {
+                Console.WriteLine("Ошибка! Нет такого промокода. Попробуйте еще раз");
+                promoCode = CustomInput.ReadText();
+                continue;
+            }
+
+            return promoCode;
+        }
+    }
 }

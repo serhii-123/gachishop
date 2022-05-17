@@ -118,7 +118,7 @@ public class BuyerService : IBuyerService
         {
             Product product = _ctx.Products.First(p => p.Id == cartItem.ProductId);
 
-            totalSum += product.Price * cartItem.Quantity;
+            totalSum += (product.Price - (product.Price / 100 * product.Discount)) * cartItem.Quantity;
         }
 
         return totalSum;
@@ -150,5 +150,40 @@ public class BuyerService : IBuyerService
             
         productInventory.Quantity -= quantity;
         _ctx.SaveChanges();
+    }
+
+    public PromoCode GetPromoCodeByCode(string code)
+    {
+        return _ctx.PromoCodes
+            .FirstOrDefault(c => c.Code == code);
+    }
+
+    public void CreateOrder(int userId, string сode)
+    {
+        Cart cart = GetCartByUserId(userId);
+        CartItem[] cartItems = GetCartItemsByCartId(cart.Id);
+
+        int totalPrice = GetPriceOfAllCartProductsByCartId(cart.Id);
+
+        if (сode != "")
+        {
+            PromoCode promoCode = GetPromoCodeByCode(сode);
+            totalPrice -= (totalPrice / 100 * promoCode.Discount);
+        }
+            
+        Order order = new Order(userId, totalPrice);
+        
+        _ctx.Orders.Add(order);
+        
+        foreach (CartItem cartItem in cartItems)
+        {
+            OrderItem orderItem = new OrderItem(order.Id, cartItem.ProductId, cartItem.Quantity);
+            Product product = GetProductById(cartItem.ProductId);
+            ProductInventory productInventory = GetProductInventoryById(product.InventoryId);
+
+            AddOrderItem(orderItem);
+            RemoveCartItemById(cartItem.Id);
+            ReduceProductQuantityInInventory(productInventory.Id, cartItem.Quantity);
+        }
     }
 }

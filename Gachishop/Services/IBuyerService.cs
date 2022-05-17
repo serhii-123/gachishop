@@ -21,4 +21,6 @@ public interface IBuyerService
     void AddOrderItem(OrderItem orderItem);
     ProductInventory GetProductInventoryById(int id);
     void ReduceProductQuantityInInventory(int id, int quantity);
+    void CreateOrder(int userId, string сode);
+    PromoCode GetPromoCodeByCode(string code);
 }
