@@ -111,19 +111,9 @@ public class BuyerControllerDataParser : IBuyerControllerDataParser
         string regexp = @"^(0[1-9]|1[0-2])\/?([0-9]{2})$";
         
         Console.WriteLine("Введите дату, до которой действительна карта");
-        validity = CustomInput.ReadText();
+        validity = CustomInput.ReadValidity();
 
-        while (true)
-        {
-            if (!Regex.IsMatch(validity, regexp))
-            {
-                Console.WriteLine("Ошибка! Введенная строка не соответствует формату. Введите другую");
-                validity = CustomInput.ReadText();
-                continue;
-            }
-
-            return validity;
-        }
+        return validity;
     }
 
     public int GetSecurityCode()
