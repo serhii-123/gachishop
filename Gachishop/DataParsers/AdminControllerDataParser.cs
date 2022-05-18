@@ -47,20 +47,20 @@ public class AdminControllerDataParser : IAdminControllerDataParser
 
     public string GetProductCategoryNameForProduct()    
     {
-        string type;
+        string category;
         List<string> productCategories = _service.GetProductCategories();
 
         Console.WriteLine("Введите категорию товара");
-        type = CustomInput.ReadText();
+        category = CustomInput.ReadText();
         
         while (true)
         {
-            if (!productCategories.Contains(type))
+            if (!productCategories.Contains(category))
             {
                 Console.WriteLine("Неверная категория товара. Введите другую");
-                type = CustomInput.ReadText();
+                category = CustomInput.ReadText();
             }
-            else return type;
+            else return category;
         }
     }
 
