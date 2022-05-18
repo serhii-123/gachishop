@@ -84,7 +84,7 @@ public class BuyerController
 
     private void ShowProducts()
     {
-        Product[] products = _service.GetAllProducts();
+        List<Product> products = _service.GetAllProducts();
         
         foreach (Product product in products)
         {
@@ -110,8 +110,7 @@ public class BuyerController
         int productId = _dataParser.GetProductId(_buyer);
         int productQuantity = _dataParser.GetProductQuantity(productId);
         Cart cart = _service.GetCartByUserId(_buyer.Id);
-        CartItem cartItem = new CartItem(cart.Id, productId, productQuantity);
-        
+
         _service.AddCartItem(cart.Id, productId, productQuantity);
 
         Console.WriteLine("Товар добавлен в корзину");
@@ -120,9 +119,9 @@ public class BuyerController
     private void ShowProductsFromCart()
     {
         Cart cart = _service.GetCartByUserId(_buyer.Id);
-        CartItem[] cartItems = _service.GetCartItemsByCartId(cart.Id);
+        List<CartItem> cartItems = _service.GetCartItemsByCartId(cart.Id);
         
-        if (cartItems.Length == 0)
+        if (cartItems.Count == 0)
         {
             Console.WriteLine("Корзина пуста");
             return;
@@ -143,9 +142,9 @@ public class BuyerController
     private void DeleteProductFromCart()
     {
         Cart cart = _service.GetCartByUserId(_buyer.Id);
-        CartItem[] cartItems = _service.GetCartItemsByCartId(cart.Id);
+        List<CartItem> cartItems = _service.GetCartItemsByCartId(cart.Id);
 
-        if (cartItems.Length == 0)
+        if (cartItems.Count == 0)
         {
             Console.WriteLine("Корзина пустая, удалять нечего");
             return;
@@ -161,11 +160,11 @@ public class BuyerController
     private void BuyProducts()
     {
         Cart cart = _service.GetCartByUserId(_buyer.Id);
-        CartItem[] cartItems = _service.GetCartItemsByCartId(cart.Id);
+        List<CartItem> cartItems = _service.GetCartItemsByCartId(cart.Id);
         UserPayment userPayment = _service.GetUserPaymentByUserId(_buyer.Id);
         UserDeliveryData userDeliveryData = _service.GetUserDeliveryDataByUserId(_buyer.Id);
         
-        if (cartItems.Length == 0)
+        if (cartItems.Count == 0)
         {
             Console.WriteLine("Корзина пустая");
             return;

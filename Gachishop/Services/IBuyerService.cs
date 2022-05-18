@@ -4,12 +4,12 @@ public interface IBuyerService
 {
     Product GetProductById(int id);
     Cart GetCartByUserId(int id);
-    int[] GetCartItemIdsByCartId(int id);
+    List<int> GetCartItemIdsByCartId(int id);
     int GetProductUnitsQuantityByInventoryId(int id);
-    Product[] GetAllProducts();
+    List<Product> GetAllProducts();
     string GetCategoryNameById(int id);
     void AddCartItem(int cartId, int productId, int productQuantity);
-    CartItem[] GetCartItemsByCartId(int id);
+    List<CartItem> GetCartItemsByCartId(int id);
     CartItem GetCartItemByCartIdAndProductId(int cartId, int productId);
     void RemoveCartItemById(int id);
     UserPayment GetUserPaymentByUserId(int id);

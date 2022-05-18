@@ -102,6 +102,8 @@ public class AdminController
                 .Address;
             
             _postalController.SendPackage(order, orderItems, products, address);
+
+            _service.RemoveOrderItems(orderItems);
         }
     }
 }

@@ -29,9 +29,9 @@ public class BuyerControllerDataParser : IBuyerControllerDataParser
             }
             
             Cart cart = _service.GetCartByUserId(user.Id);
-            int[] cartItems = _service.GetCartItemIdsByCartId(cart.Id);
+            List<int> cartItemIds = _service.GetCartItemIdsByCartId(cart.Id);
 
-            if (cartItems.Contains(id))
+            if (cartItemIds.Contains(id))
             {
                 Console.WriteLine("Ошибка! Товар с таким номером уже есть в корзине. Введите другой");
                 id = CustomInput.ReadNumber();
@@ -77,7 +77,7 @@ public class BuyerControllerDataParser : IBuyerControllerDataParser
     {
         int productId;
         Cart cart = _service.GetCartByUserId(user.Id);
-        int[] productIds = _service.GetCartItemIdsByCartId(cart.Id);
+        List<int> productIds = _service.GetCartItemIdsByCartId(cart.Id);
         
         Console.WriteLine("Введите номер товара");
         productId = CustomInput.ReadNumber();

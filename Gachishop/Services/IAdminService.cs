@@ -9,4 +9,6 @@ public interface IAdminService
     List<OrderItem> GetOrderItemsByOrderId(int id);
     UserDeliveryData GetUserDeliveryDataByUserId(int id);
     List<Product> GetProductsByOrderId(int id);
+    void RemoveOrderItems(List<OrderItem> orderItems);
+    void RemoveOrder(Order order);
 }

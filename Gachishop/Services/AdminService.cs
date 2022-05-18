@@ -84,4 +84,14 @@ public class AdminService : IAdminService
 
         return products;
     }
+
+    public void RemoveOrderItems(List<OrderItem> orderItems)
+    {
+        _ctx.OrderItems.RemoveRange(orderItems);
+    }
+
+    public void RemoveOrder(Order order)
+    {
+        _ctx.Orders.Remove(order);
+    }
 }

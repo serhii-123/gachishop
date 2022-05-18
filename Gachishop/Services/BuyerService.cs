@@ -20,13 +20,13 @@ public class BuyerService : IBuyerService
             .First(c => c.UserId == id);
     }
 
-    public int[] GetCartItemIdsByCartId(int id)
+    public List<int> GetCartItemIdsByCartId(int id)
     {
         return _ctx.CartItems
             .Select(i => i)
             .Where(i => i.CartId == id)
             .Select(i => i.ProductId)
-            .ToArray();
+            .ToList();
     }
 
     public int GetProductUnitsQuantityByInventoryId(int id)
@@ -36,9 +36,9 @@ public class BuyerService : IBuyerService
             .Quantity;
     }
 
-    public Product[] GetAllProducts()
+    public List<Product> GetAllProducts()
     {
-        return _ctx.Products.ToArray();
+        return _ctx.Products.ToList();
     }
 
     public string GetCategoryNameById(int id)
@@ -56,12 +56,12 @@ public class BuyerService : IBuyerService
         _ctx.SaveChanges();
     }
 
-    public CartItem[] GetCartItemsByCartId(int id)
+    public List<CartItem> GetCartItemsByCartId(int id)
     {
         return _ctx.CartItems
             .Select(i => i)
             .Where(i => i.CartId == id)
-            .ToArray();
+            .ToList();
     }
 
     public CartItem GetCartItemByCartIdAndProductId(int cartId, int productId)
@@ -111,7 +111,7 @@ public class BuyerService : IBuyerService
 
     public int GetPriceOfAllCartProductsByCartId(int id)
     {
-        CartItem[] cartItems = GetCartItemsByCartId(id);
+        List<CartItem> cartItems = GetCartItemsByCartId(id);
         int totalSum = 0;
 
         foreach (var cartItem in cartItems)
@@ -161,7 +161,7 @@ public class BuyerService : IBuyerService
     public void CreateOrder(int userId, string сode)
     {
         Cart cart = GetCartByUserId(userId);
-        CartItem[] cartItems = GetCartItemsByCartId(cart.Id);
+        List<CartItem> cartItems = GetCartItemsByCartId(cart.Id);
 
         int totalPrice = GetPriceOfAllCartProductsByCartId(cart.Id);
 
