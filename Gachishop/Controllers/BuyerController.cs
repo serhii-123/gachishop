@@ -176,7 +176,7 @@ public class BuyerController
             CreateUserPayment();
        
         if (userDeliveryData == null)
-            CreateDeliveryData();
+            CreateUserDeliveryData();
         
         _service.CreateOrder(_buyer.Id, promoCode);
         int totalPrice = _service.GetTotalPriceOfLastOrderByUserId(_buyer.Id);
@@ -193,7 +193,7 @@ public class BuyerController
         _service.AddUserPayment(_buyer.Id, cardNumber, validity, securityCode);
     }
 
-    public void CreateDeliveryData()
+    public void CreateUserDeliveryData()
     {
         string address = _dataParser.GetAddress();
         string phoneNumber = _dataParser.GetPhoneNumber();
