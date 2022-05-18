@@ -108,8 +108,7 @@ public class BuyerControllerDataParser : IBuyerControllerDataParser
     public string GetValidity()
     {
         string validity;
-        string regexp = @"^(0[1-9]|1[0-2])\/?([0-9]{2})$";
-        
+
         Console.WriteLine("Введите дату, до которой действительна карта");
         validity = CustomInput.ReadValidity();
 
