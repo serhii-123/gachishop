@@ -23,4 +23,6 @@ public interface IBuyerService
     void ReduceProductQuantityInInventory(int id, int quantity);
     void CreateOrder(int userId, string сode);
     PromoCode GetPromoCodeByCode(string code);
+    int GetTotalPriceOfLastOrderByUserId(int id);
+    User GetUserById(int id);
 }

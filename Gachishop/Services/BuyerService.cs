@@ -160,10 +160,11 @@ public class BuyerService : IBuyerService
 
     public void CreateOrder(int userId, string сode)
     {
+        User user = GetUserById(userId);
         Cart cart = GetCartByUserId(userId);
         List<CartItem> cartItems = GetCartItemsByCartId(cart.Id);
-
-        int totalPrice = GetPriceOfAllCartProductsByCartId(cart.Id);
+        int priceOfProducts = GetPriceOfAllCartProductsByCartId(cart.Id);
+        int totalPrice = priceOfProducts - (priceOfProducts / 100 * user.Discount);
 
         if (сode != "")
         {
@@ -186,5 +187,20 @@ public class BuyerService : IBuyerService
             RemoveCartItemById(cartItem.Id);
             ReduceProductQuantityInInventory(productInventory.Id, cartItem.Quantity);
         }
+    }
+
+    public int GetTotalPriceOfLastOrderByUserId(int id)
+    {
+        List<Order> orders = _ctx.Orders
+            .Select(o => o)
+            .Where(o => o.UserId == id)
+            .ToList();
+        
+        return orders.Last().Total;
+    }
+
+    public User GetUserById(int id)
+    {
+        return _ctx.Users.First(u => u.Id == id);
     }
 }

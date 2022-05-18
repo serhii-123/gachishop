@@ -88,10 +88,12 @@ public class AdminService : IAdminService
     public void RemoveOrderItems(List<OrderItem> orderItems)
     {
         _ctx.OrderItems.RemoveRange(orderItems);
+        _ctx.SaveChanges();
     }
 
     public void RemoveOrder(Order order)
     {
         _ctx.Orders.Remove(order);
+        _ctx.SaveChanges();
     }
 }

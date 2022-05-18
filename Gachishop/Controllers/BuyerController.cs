@@ -179,8 +179,9 @@ public class BuyerController
             CreateDeliveryData();
         
         _service.CreateOrder(_buyer.Id, promoCode);
-
-        Console.WriteLine("Ваш заказ принят");
+        int totalPrice = _service.GetTotalPriceOfLastOrderByUserId(_buyer.Id);
+        
+        Console.WriteLine($"Ваш заказ принят. Стоимость заказа: {totalPrice}$");
     }
 
     public void CreateUserPayment()
