@@ -48,7 +48,7 @@ public class AdminControllerDataParser : IAdminControllerDataParser
     public string GetProductCategoryNameForProduct()    
     {
         string type;
-        string[] productCategories = _service.GetProductCategories();
+        List<string> productCategories = _service.GetProductCategories();
 
         Console.WriteLine("Введите категорию товара");
         type = CustomInput.ReadText();

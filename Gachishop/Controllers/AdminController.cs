@@ -61,26 +61,6 @@ public class AdminController
         
     }
 
-    public void ProcessOrders()
-    {
-        Order[] orders = _service.GetAllOrders();
-
-        if (orders.Length == 0)
-        {
-            Console.WriteLine("Заказы отсутствуют");
-            return;
-        }
-        
-        foreach (Order order in orders)
-        {
-            OrderItem[] orderItems = _service.GetOrderItemsByOrderId(order.Id);
-            Product[] products;
-            UserDeliveryData address = _service.GetUserDeliveryDataByUserId(order.UserId);
-            
-            //_postalController.SendPackage(order, );
-        }
-    }
-
     private void AddProduct()
     {
         string name = _dataParser.GetProductName();
@@ -101,5 +81,27 @@ public class AdminController
 
         _service.AddProductCategory(categoryName);
         Console.WriteLine("Категория добавлена");
+    }
+    
+    private void ProcessOrders()
+    {
+        List<Order> orders = _service.GetAllOrders();
+
+        if (orders.Count == 0)
+        {
+            Console.WriteLine("Заказы отсутствуют");
+            return;
+        }
+        
+        foreach (Order order in orders)
+        {
+            List<OrderItem> orderItems = _service.GetOrderItemsByOrderId(order.Id);
+            List<Product> products = _service.GetProductsByOrderId(order.Id);
+            string address = _service
+                .GetUserDeliveryDataByUserId(order.UserId)
+                .Address;
+            
+            _postalController.SendPackage(order, orderItems, products, address);
+        }
     }
 }

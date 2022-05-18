@@ -2,10 +2,11 @@
 
 public interface IAdminService
 {
-    string[] GetProductCategories();
+    List<string> GetProductCategories();
     void AddProduct(string name, string description, string category, int price, int quantity, int discount);
     void AddProductCategory(string name);
-    Order[] GetAllOrders();
-    OrderItem[] GetOrderItemsByOrderId(int id);
+    List<Order> GetAllOrders();
+    List<OrderItem> GetOrderItemsByOrderId(int id);
     UserDeliveryData GetUserDeliveryDataByUserId(int id);
+    List<Product> GetProductsByOrderId(int id);
 }

@@ -10,9 +10,9 @@ public class AdminService : IAdminService
     {
         _ctx = ctx;
     }
-    public string[] GetProductCategories()
+    public List<string> GetProductCategories()
     {
-        string[] productCategories = _ctx.ProductCategories.Select(c => c.Name).ToArray();
+        List<string> productCategories = _ctx.ProductCategories.Select(c => c.Name).ToList();
         return productCategories;
     }
 
@@ -40,11 +40,11 @@ public class AdminService : IAdminService
         _ctx.SaveChanges();
     }
 
-    public Order[] GetAllOrders()
+    public List<Order> GetAllOrders()
     {
         return _ctx.Orders
             .Select(o => o)
-            .ToArray();
+            .ToList();
     }
 
     public User GetUserById(int id)
@@ -52,17 +52,36 @@ public class AdminService : IAdminService
         return _ctx.Users.First(u => u.Id == id);
     }
 
-    public OrderItem[] GetOrderItemsByOrderId(int id)
+    public List<OrderItem> GetOrderItemsByOrderId(int id)
     {
         return _ctx.OrderItems
             .Select(i => i)
             .Where(i => i.OrderId == id)
-            .ToArray();
+            .ToList();
     }
 
     public UserDeliveryData GetUserDeliveryDataByUserId(int id)
     {
         return _ctx.UserDeliveryData
             .First(d => d.UserId == id);
+    }
+
+    public Product GetProductById(int id)
+    {
+        return _ctx.Products.First(p => p.Id == id);
+    }
+
+    public List<Product> GetProductsByOrderId(int id)
+    {
+        List<OrderItem> orderItems = GetOrderItemsByOrderId(id);
+        List<Product> products = new List<Product>();
+
+        foreach (OrderItem orderItem in orderItems)
+        {
+            Product product = GetProductById(orderItem.ProductId);
+            products.Add(product);
+        }
+
+        return products;
     }
 }
