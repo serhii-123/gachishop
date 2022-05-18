@@ -97,13 +97,15 @@ public class AdminController
         {
             List<OrderItem> orderItems = _service.GetOrderItemsByOrderId(order.Id);
             List<Product> products = _service.GetProductsByOrderId(order.Id);
+            User user = _service.GetUserById(order.UserId);
             string address = _service
                 .GetUserDeliveryDataByUserId(order.UserId)
                 .Address;
             
-            _postalController.SendPackage(order, orderItems, products, address);
-
-            _service.RemoveOrderItems(orderItems);
+            _postalController.SendPackage(order, orderItems, products, user, address);
         }
+        
+        _service.RemoveAllOrderItems();
+        _service.RemoveAllOrders();
     }
 }

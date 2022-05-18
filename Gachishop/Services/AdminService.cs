@@ -85,15 +85,15 @@ public class AdminService : IAdminService
         return products;
     }
 
-    public void RemoveOrderItems(List<OrderItem> orderItems)
+    public void RemoveAllOrderItems()
     {
-        _ctx.OrderItems.RemoveRange(orderItems);
+        _ctx.OrderItems.RemoveRange(_ctx.OrderItems);
         _ctx.SaveChanges();
     }
 
-    public void RemoveOrder(Order order)
+    public void RemoveAllOrders()
     {
-        _ctx.Orders.Remove(order);
+        _ctx.Orders.RemoveRange(_ctx.Orders);
         _ctx.SaveChanges();
     }
 }
