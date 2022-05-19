@@ -8,15 +8,17 @@ namespace Gachishop
 {
     class LoginService : ILoginService
     {
+        private ShopContext _ctx;
+
+        public LoginService(ShopContext ctx)
+        {
+            _ctx = ctx;
+        }
         public User FindUser(string name, string password)
         {
-            using (ShopContext ctx = new ShopContext())
-            {
-                IEnumerable<User> list = ctx.Users.ToList();
+            IEnumerable<User> list = _ctx.Users.ToList();
 
-                return list.FirstOrDefault(u => (u.Username == name) && (u.Password == password));
-            }
+            return list.FirstOrDefault(u => (u.Username == name) && (u.Password == password));
         }
     }
-}   
-
+}

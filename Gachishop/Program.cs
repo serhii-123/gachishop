@@ -16,7 +16,7 @@ class Program
         IAdminControllerDataParser adminControllerDataParser = new AdminControllerDataParser(adminService);
         AdminController adminController = new AdminController(adminService, adminControllerDataParser, postalController);
 
-        ILoginService loginService = new LoginService();
+        ILoginService loginService = new LoginService(ctx);
         LoginController loginController = new LoginController(loginService);
 
         IBuyerService buyerService = new BuyerService(ctx);
