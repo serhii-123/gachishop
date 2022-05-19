@@ -23,8 +23,10 @@ public class AdminControllerDataParser : IAdminControllerDataParser
             {
                 Console.WriteLine("Name too short. Try again");
                 name = CustomInput.ReadText();
+                continue;
             }
-            else return name;
+            
+            return name;
         }
     }
     public string GetProductDescription()
@@ -40,8 +42,10 @@ public class AdminControllerDataParser : IAdminControllerDataParser
             {
                 Console.WriteLine("Description too short. Try again");
                 description = CustomInput.ReadText();
+                continue;
             }
-            else return description;
+            
+            return description;
         }
     }
 
@@ -59,8 +63,10 @@ public class AdminControllerDataParser : IAdminControllerDataParser
             {
                 Console.WriteLine("Wrong category. Try again");
                 category = CustomInput.ReadText();
+                continue;
             }
-            else return category;
+            
+            return category;
         }
     }
 
@@ -77,8 +83,10 @@ public class AdminControllerDataParser : IAdminControllerDataParser
             {
                 Console.WriteLine("The price cannot be zero. Try again");
                 price = CustomInput.ReadNumber();
-            }
-            else return price;
+                continue;
+            } 
+            
+            return price;
         }
     }
     
@@ -95,8 +103,10 @@ public class AdminControllerDataParser : IAdminControllerDataParser
             {
                 Console.WriteLine("The quantity cannot be zero. Try again");
                 quantity = CustomInput.ReadNumber();
+                continue;
             }
-            else return quantity;
+            
+            return quantity;
         }
     }
     
