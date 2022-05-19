@@ -23,13 +23,14 @@ public class BuyerController
 
         while (!done)
         {
-            Console.WriteLine("Введите номер команды: \n" +
-                              "(1)Показать товары \n" +
-                              "(2)Добавить товар в корзину \n" +
-                              "(3)Показать содержимое корзины \n" +
-                              "(4)Удалить товар из корзины \n" +
-                              "(5)Купить товар(-ы) \n" +
-                              "(6)Выйти \n");
+           
+            Console.WriteLine("Enter operation number: \n" +
+                              "(1)Show products \n" +
+                              "(2)Add product to cart \n" +
+                              "(3)Show cart content \n" +
+                              "(4)Delete product from cart \n" +
+                              "(5)Buy products \n" +
+                              "(6)Exit \n");
             
             enteredNumber = CustomInput.ReadNumber();
 
@@ -38,35 +39,35 @@ public class BuyerController
                 case(1):
                     Console.Clear();
                     ShowProducts();
-                    Console.WriteLine("Нажмите любую кнопку");
+                    Console.WriteLine("Press any key");
                     Console.ReadKey();
                     Console.Clear();
                     break;
                 case(2):
                     Console.Clear();
                     AddProductToCart();
-                    Console.WriteLine("Нажмите любую кнопку");
+                    Console.WriteLine("Press any key");
                     Console.ReadKey();
                     Console.Clear();
                     break;
                 case(3):
                     Console.Clear();
                     ShowProductsFromCart();
-                    Console.WriteLine("Нажмите любую кнопку");
+                    Console.WriteLine("Press any key");
                     Console.ReadKey();
                     Console.Clear();
                     break;
                 case(4):
                     Console.Clear();
                     DeleteProductFromCart();
-                    Console.WriteLine("Нажмите любую кнопку");
+                    Console.WriteLine("Press any key");
                     Console.ReadKey();
                     Console.Clear();
                     break;
                 case(5):
                     Console.Clear();
                     BuyProducts();
-                    Console.WriteLine("Нажмите любую кнопку");
+                    Console.WriteLine("Press any key");
                     Console.ReadKey();
                     Console.Clear();
                     break;
@@ -76,7 +77,7 @@ public class BuyerController
                     break;
                 default:
                     Console.Clear();
-                    Console.WriteLine("Нет команды с данной цифрой");
+                    Console.WriteLine("Operation with this number does not exist");
                     break;
             }
         }
@@ -95,11 +96,11 @@ public class BuyerController
             {
                 Console.WriteLine($"{product.Name} \n" +
                                   $"{product.Description} \n" +
-                                  $"Номер товара: {product.Id} " +
-                                  $"| Категория: {productCategory} " +
-                                  $"| Цена: {product.Price}$ " +
-                                  $"| Кол-во: {productQuantity} " +
-                                  $"| Cкидка: {product.Discount}% \n" +
+                                  $"Product id: {product.Id} " +
+                                  $"| Category: {productCategory} " +
+                                  $"| Price: {product.Price}$ " +
+                                  $"| Quantity: {productQuantity} " +
+                                  $"| Discount: {product.Discount}% \n" +
                                   "----------");    
             }
         }
@@ -113,7 +114,7 @@ public class BuyerController
 
         _service.AddCartItem(cart.Id, productId, productQuantity);
 
-        Console.WriteLine("Товар добавлен в корзину");
+        Console.WriteLine("Product added to cart");
     }
 
     private void ShowProductsFromCart()
@@ -123,7 +124,7 @@ public class BuyerController
         
         if (cartItems.Count == 0)
         {
-            Console.WriteLine("Корзина пуста");
+            Console.WriteLine("Cart is empty");
             return;
         }
         
@@ -131,10 +132,10 @@ public class BuyerController
         {
             Product product = _service.GetProductById(cartItem.ProductId);
             
-            Console.WriteLine($"Имя: {product.Name} " +
-                              $"| Номер: {product.Id} " +
-                              $"| Цена: {product.Price}$ " +
-                              $"| Кол-во: {cartItem.Quantity} \n" +
+            Console.WriteLine($"Product name: {product.Name} " +
+                              $"| Id: {product.Id} " +
+                              $"| Price: {product.Price}$ " +
+                              $"| Quantity: {cartItem.Quantity} \n" +
                               "----------");
         }
     }
@@ -146,7 +147,7 @@ public class BuyerController
 
         if (cartItems.Count == 0)
         {
-            Console.WriteLine("Корзина пустая, удалять нечего");
+            Console.WriteLine("Cart is empty, nothing to delete");
             return;
         }
                 
@@ -154,7 +155,7 @@ public class BuyerController
         CartItem cartItem = _service.GetCartItemByCartIdAndProductId(cart.Id, productId);
             
         _service.RemoveCartItemById(cartItem.Id);
-        Console.WriteLine("Товар удален из корзины");
+        Console.WriteLine("Product deleted from cart");
     }
 
     private void BuyProducts()
@@ -166,7 +167,7 @@ public class BuyerController
         
         if (cartItems.Count == 0)
         {
-            Console.WriteLine("Корзина пустая");
+            Console.WriteLine("Cart is empty");
             return;
         }
 
@@ -181,7 +182,7 @@ public class BuyerController
         _service.CreateOrder(_buyer.Id, promoCode);
         int totalPrice = _service.GetTotalPriceOfLastOrderByUserId(_buyer.Id);
         
-        Console.WriteLine($"Ваш заказ принят. Стоимость заказа: {totalPrice}$");
+        Console.WriteLine($"Your order is accept. Order price: {totalPrice}$");
     }
 
     public void CreateUserPayment()

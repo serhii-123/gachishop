@@ -14,7 +14,7 @@ public class BuyerControllerDataParser : IBuyerControllerDataParser
     {
         int id;
         
-        Console.WriteLine("Введите номер товара");
+        Console.WriteLine("Enter product id");
         id = CustomInput.ReadNumber();
         
         while (true)
@@ -23,7 +23,7 @@ public class BuyerControllerDataParser : IBuyerControllerDataParser
             
             if (product == null)
             {
-                Console.WriteLine("Ошибка! Нет товара с таким номером. Введите другой");
+                Console.WriteLine("Error! There is no product with this id. Try again");
                 id = CustomInput.ReadNumber();
                 continue;
             }
@@ -33,7 +33,7 @@ public class BuyerControllerDataParser : IBuyerControllerDataParser
 
             if (cartItemIds.Contains(id))
             {
-                Console.WriteLine("Ошибка! Товар с таким номером уже есть в корзине. Введите другой");
+                Console.WriteLine("Error! Product with this number is already in the cart. Try again");
                 id = CustomInput.ReadNumber();
                 continue;
             }
@@ -42,7 +42,7 @@ public class BuyerControllerDataParser : IBuyerControllerDataParser
 
             if (quantityOfProductUnits == 0) 
             {
-                Console.WriteLine("Ошибка! Данный товар сейчас не доступен. Введите другой номер");
+                Console.WriteLine("Error! This product is currently not available. Try again");
                 id = CustomInput.ReadNumber();
                 continue;
             }
@@ -57,14 +57,14 @@ public class BuyerControllerDataParser : IBuyerControllerDataParser
         Product product = _service.GetProductById(productId);
         int currentQuantity = _service.GetProductUnitsQuantityByInventoryId(product.InventoryId);
         
-        Console.WriteLine("Введите кол-во товаров");
+        Console.WriteLine("Enter product quantity that you want");
         quantity = CustomInput.ReadNumber();
 
         while (true)
         {
             if (quantity > currentQuantity)
             {
-                Console.WriteLine("Ошибка! Недоступно такое количество. Введите другое");
+                Console.WriteLine("Error! This amount is not available. Try again");
                 quantity = CustomInput.ReadNumber();
                 continue;
             }
@@ -79,14 +79,14 @@ public class BuyerControllerDataParser : IBuyerControllerDataParser
         Cart cart = _service.GetCartByUserId(user.Id);
         List<int> productIds = _service.GetCartItemIdsByCartId(cart.Id);
         
-        Console.WriteLine("Введите номер товара");
+        Console.WriteLine("Enter product id");
         productId = CustomInput.ReadNumber();
         
         while (true)
         {
             if (!productIds.Contains(productId))
             {
-                Console.WriteLine("Ошибка! В корзине нет товара с таким номером");
+                Console.WriteLine("Error! There is no product with this id in the cart");
                 productId = CustomInput.ReadNumber();
                 continue;
             }
@@ -99,7 +99,7 @@ public class BuyerControllerDataParser : IBuyerControllerDataParser
     {
         string cardNumber;
         
-        Console.WriteLine("Введите номер карты");
+        Console.WriteLine("Enter card numbers");
         cardNumber = CustomInput.ReadCardNumber();
         
         return cardNumber;
@@ -109,7 +109,7 @@ public class BuyerControllerDataParser : IBuyerControllerDataParser
     {
         string validity;
 
-        Console.WriteLine("Введите дату, до которой действительна карта");
+        Console.WriteLine("Enter the date until which the card is valid");
         validity = CustomInput.ReadValidity();
 
         return validity;
@@ -119,7 +119,7 @@ public class BuyerControllerDataParser : IBuyerControllerDataParser
     {
         int securityCode;
         
-        Console.WriteLine("Введите защитный код");
+        Console.WriteLine("Enter CVV code");
         securityCode = CustomInput.ReadSecurityCode();
 
         return securityCode;
@@ -129,14 +129,14 @@ public class BuyerControllerDataParser : IBuyerControllerDataParser
     {
         string address;
         
-        Console.WriteLine("Введите адрес доставки");
+        Console.WriteLine("Enter shipping address");
         address = CustomInput.ReadText();
 
         while (true)
         {
             if (address.Length < 15)
             {
-                Console.WriteLine("Ошибка! Была введена слишком короткая строка. Попробуйте еще раз");
+                Console.WriteLine("Error! Too short string was entered. Try again");
                 address = CustomInput.ReadText();
                 continue;
             }
@@ -149,7 +149,7 @@ public class BuyerControllerDataParser : IBuyerControllerDataParser
     {
         string phoneNumber;
         
-        Console.WriteLine("Введите номер телефона");
+        Console.WriteLine("Enter phone number");
         phoneNumber = CustomInput.ReadPhoneNumber();
 
         return phoneNumber;
@@ -159,22 +159,22 @@ public class BuyerControllerDataParser : IBuyerControllerDataParser
     {
         string answer;
 
-        Console.WriteLine("Желаете ввести промокод? \n" +
-                          "(Введите \"yes\" или \"no\")");
+        Console.WriteLine("Would you like to enter a promo code? \n" +
+                          "(Enter \"yes\" or \"no\")");
         answer = CustomInput.ReadYesOrNo();
 
         if (answer == "no")
             return "";
         
         string promoCode;
-        Console.WriteLine("Введите промокод");
+        Console.WriteLine("Enter promo code");
         promoCode = CustomInput.ReadText();
 
         while (true)
         {
             if (_service.GetPromoCodeByCode(promoCode) == null)
             {
-                Console.WriteLine("Ошибка! Нет такого промокода. Попробуйте еще раз");
+                Console.WriteLine("Error! This promo code does not exist. try again");
                 promoCode = CustomInput.ReadText();
                 continue;
             }

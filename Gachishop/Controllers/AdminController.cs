@@ -19,11 +19,11 @@ public class AdminController
         int enteredNumber;
         while (!done)
         {
-            Console.WriteLine("Введите номер команды: \n" +
-                              "(1)Добавить товар \n" +
-                              "(2)Добавить категорию \n" +
-                              "(3)Обработать заказы \n" +
-                              "(4)Выйти");
+            Console.WriteLine("Enter number of operation: \n" +
+                               "(1)Add product \n" +
+                               "(2)Add category \n" +
+                               "(3)Process orders \n" +
+                               "(4)Exit");
             enteredNumber = CustomInput.ReadNumber();
 
             switch (enteredNumber)
@@ -31,21 +31,21 @@ public class AdminController
                 case(1):
                     Console.Clear();
                     AddProduct();
-                    Console.WriteLine("Нажмите любую клавишу");
+                    Console.WriteLine("Press any key");
                     Console.ReadKey();
                     Console.Clear();
                     break;
                 case(2):
                     Console.Clear();
                     AddCategory();
-                    Console.WriteLine("Нажмите любую клавишу");
+                    Console.WriteLine("Press any key");
                     Console.ReadKey();
                     Console.Clear();
                     break;
                 case(3):
                     Console.Clear();
                     ProcessOrders();
-                    Console.WriteLine("Нажмите любую клавишу");
+                    Console.WriteLine("Press any key");
                     Console.ReadKey();
                     Console.Clear();
                     break;
@@ -53,7 +53,7 @@ public class AdminController
                     done = true;
                     break;
                 default:
-                    Console.WriteLine("Нет команды с данной цифрой");
+                    Console.WriteLine("Operation with this number does not exist");
                     break;
             }
         }
@@ -72,7 +72,7 @@ public class AdminController
 
         _service.AddProduct(name, description, category, price, quantity, discount);
 
-        Console.WriteLine("Товар добавлен");
+        Console.WriteLine("Product added");
     }
 
     private void AddCategory()
@@ -80,7 +80,7 @@ public class AdminController
         string categoryName = _dataParser.GetProductCategoryName();
 
         _service.AddProductCategory(categoryName);
-        Console.WriteLine("Категория добавлена");
+        Console.WriteLine("Category added");
     }
     
     private void ProcessOrders()
@@ -89,7 +89,7 @@ public class AdminController
 
         if (orders.Count == 0)
         {
-            Console.WriteLine("Заказы отсутствуют");
+            Console.WriteLine("No orders");
             return;
         }
         

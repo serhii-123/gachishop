@@ -14,14 +14,14 @@ public class AdminControllerDataParser : IAdminControllerDataParser
     {
         string name;
         
-        Console.WriteLine("Введите имя товара");
+        Console.WriteLine("Enter product name");
         name = CustomInput.ReadText();
 
         while (true)
         {
             if (name.Length < 3)
             {
-                Console.WriteLine("Слишком короткое имя. Введите другое");
+                Console.WriteLine("Name too short. Try again");
                 name = CustomInput.ReadText();
             }
             else return name;
@@ -31,14 +31,14 @@ public class AdminControllerDataParser : IAdminControllerDataParser
     {
         string description;
         
-        Console.WriteLine("Введите описание товара");
+        Console.WriteLine("Enter product description");
         description = CustomInput.ReadText();
 
         while (true)
         {
             if (description.Length < 20)
             {
-                Console.WriteLine("Слишком короткое описание. Введите другое");
+                Console.WriteLine("Description too short. Try again");
                 description = CustomInput.ReadText();
             }
             else return description;
@@ -50,14 +50,14 @@ public class AdminControllerDataParser : IAdminControllerDataParser
         string category;
         List<string> productCategories = _service.GetProductCategories();
 
-        Console.WriteLine("Введите категорию товара");
+        Console.WriteLine("Enter product category");
         category = CustomInput.ReadText();
         
         while (true)
         {
             if (!productCategories.Contains(category))
             {
-                Console.WriteLine("Неверная категория товара. Введите другую");
+                Console.WriteLine("Wrong category. Try again");
                 category = CustomInput.ReadText();
             }
             else return category;
@@ -68,14 +68,14 @@ public class AdminControllerDataParser : IAdminControllerDataParser
     {
         int price;
         
-        Console.WriteLine("Введите цену товара");
+        Console.WriteLine("Enter price");
         price = CustomInput.ReadNumber();
 
         while (true)
         {
             if (price == 0)
             {
-                Console.WriteLine("Цена не может быть равна нулю. Введите другую");
+                Console.WriteLine("The price cannot be zero. Try again");
                 price = CustomInput.ReadNumber();
             }
             else return price;
@@ -86,14 +86,14 @@ public class AdminControllerDataParser : IAdminControllerDataParser
     {
         int quantity;
         
-        Console.WriteLine("Введите кол-во единиц товара");
+        Console.WriteLine("Enter product quantity");
         quantity = CustomInput.ReadNumber();
 
         while (true)
         {
             if (quantity == 0)
             {
-                Console.WriteLine("Кол-во товаров не может быть равно нулю. Введите другое");
+                Console.WriteLine("The quantity cannot be zero. Try again");
                 quantity = CustomInput.ReadNumber();
             }
             else return quantity;
@@ -104,14 +104,14 @@ public class AdminControllerDataParser : IAdminControllerDataParser
     {
         int discount;
         
-        Console.WriteLine("Введите скидку на товар");
+        Console.WriteLine("Enter product discount");
         discount = CustomInput.ReadNumber();
 
         while (true)
         {
             if (discount > 99)
             {
-                Console.WriteLine("Скидка не может быть больше 99-ти процентов. Введите другую");
+                Console.WriteLine("Discount cannot be more than 99 percent. Try again");
                 discount = CustomInput.ReadNumber();
                 continue;
             }
@@ -124,14 +124,14 @@ public class AdminControllerDataParser : IAdminControllerDataParser
     {
         string categoryName;
         
-        Console.WriteLine("Введите имя категории");
+        Console.WriteLine("Enter category name");
         categoryName = CustomInput.ReadText();
 
         while (true)
         {
             if (categoryName.Length < 3)
             {
-                Console.WriteLine("Имя категории слишком короткое. Введите другое");
+                Console.WriteLine("Category name too short. Try again");
                 categoryName = CustomInput.ReadText();
                 continue;
             }

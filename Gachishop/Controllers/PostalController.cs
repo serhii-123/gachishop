@@ -4,8 +4,8 @@ public class PostalController
 {
     public void SendPackage(Order order, List<OrderItem> orderItems, List<Product> products, User user, string address)
     {
-        Console.WriteLine($"Посылка с номером {order.Id} была отправлена по адресу {address} \n" +
-                          $"Получатель: {user.Name} {user.Surname}");
+        Console.WriteLine($"Package with id {order.Id} was sent to {address} \n" +
+                          $"Recipient: {user.Name} {user.Surname}");
         
         foreach (Product product in products)
         {
@@ -13,8 +13,8 @@ public class PostalController
                 .Find(i => i.ProductId == product.Id)
                 .Quantity;
             
-            Console.WriteLine($"Название товара: {product.Name} " +
-                              $"| Кол-во: {quantity}");
+            Console.WriteLine($"Product Name: {product.Name} " +
+                              $"| Quantity: {quantity}");
         }
         
         Console.WriteLine("==========");
